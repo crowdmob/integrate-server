@@ -67,9 +67,9 @@ end
 
 def compute_secret_hash(app_secret_key, app_permalink, hashed_mac_address)
   # The security hash is a required POST parameter which prevents forged POST
-  # requests.  This hash consists of your app's permalink, a comma, the string
-  # "publisher_device_id", a comma, and the previously hashed MAC address -
-  # salted with your app's permalink.
+  # requests.  This security hash consists of your app's permalink, a comma,
+  # the string "publisher_device_id", a comma, and the previously hashed MAC
+  # address - salted with your app's secret key, all SHA256 hashed:
   Digest::SHA2.hexdigest(app_secret_key + app_permalink + ',' + 'publisher_device_id' + ',' + hashed_mac_address)
 end
 

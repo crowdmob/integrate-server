@@ -17,17 +17,24 @@ def report_install_to_crowdmob
   server_url = 'http://deals.mobstaging.com/loot/verify_install.json'
 
   # Eventually, you'll want to switch over to CrowdMob's production server
-  # located at: http://deals.crowdmob.com/loot/verify_install.json
+  # located at: https://deals.crowdmob.com/loot/verify_install.json
 
   # When you registered your app with CrowdMob, you got a secret key and a
   # permalink:
   app_secret_key = '5bb75e8dd6300cadcdd07fa2c46a3c10'
   app_permalink = 'lulzio'
 
+  # If you didn't record your app's secret key and permalink when you
+  # registered your app with CrowdMob, you can find it on your app's page on
+  # CrowdMob's server.  In our example, our app is located here:
+  # http://deals.mobstaging.com/organizations/crowdmob/apps/lulzio
+
   # When you signed up for server-to-server installs tracking with CrowdMob,
   # CrowdMob worked with you to determine a secure hashing algorithm, a salt,
   # and a unique device identifier to meet your requirements.  In this example,
-  # we're SHA256 hashing MAC addresses, salted with the string "salt".
+  # we're SHA256 hashing MAC addresses, salted with the string "salt".  We
+  # typically recommend using your app's secret key as your salt, but we can
+  # use any string that meets your requirements as a salt.
   salt = 'salt'
 
   # This is an example MAC address, stored in your server's database, used to

@@ -26,8 +26,13 @@ def report_install_to_crowdmob
 
   # If you didn't record your app's secret key and permalink when you
   # registered your app with CrowdMob, you can find it on your app's page on
-  # CrowdMob's server.  In our example, our app is located here:
-  # http://deals.mobstaging.com/organizations/crowdmob/apps/lulzio
+  # CrowdMob's server.  In this example, our app is located here on CrowdMob's
+  # staging server:
+  #   http://deals.mobstaging.com/organizations/crowdmob/apps/lulzio
+  #
+  # In your case, if you registered your app on CrowdMob's production server,
+  # your app's homepage URL would correspond to:
+  #   https://deals.crowdmob.com/organizations/[your organization permalink]/apps/[your app permalink]
 
   # When you signed up for server-to-server installs tracking with CrowdMob,
   # CrowdMob worked with you to determine a secure hashing algorithm, a salt,
@@ -68,6 +73,9 @@ end
 
 
 def hash_mac_address(salt, mac_address)
+  # If you already store unique device identifiers hashed, this step is
+  # unnecessary.  In this case, you would've worked with CrowdMob to implement
+  # a custom server-to-server installs tracking integration solution.
   Digest::SHA2.hexdigest(salt + mac_address)
 end
 

@@ -7,9 +7,14 @@ require 'net/http'
 
 
 def report_install_to_crowdmob
-  hashed_mac_address = hash_mac_address('salt', '11:11:11:11:11:11')
-  secret_hash = compute_secret_hash('5bb75e8dd6300cadcdd07fa2c46a3c10', 'lulzio', hashed_mac_address)
-  response, data = issue_post_request('lulzio', hashed_mac_address, secret_hash)
+  server_url = 'http://deals.mobstaging.com/loot/verify_install.json'
+  app_permalink = 'lulzio'
+  salt = 'salt'
+  mac_address = '11:11:11:11:11:11'
+
+  hashed_mac_address = hash_mac_address(salt, mac_address)
+  secret_hash = compute_secret_hash('5bb75e8dd6300cadcdd07fa2c46a3c10', app_permalink, hashed_mac_address)
+  response, data = issue_post_request(server_url, app_permalink, hashed_mac_address, secret_hash)
   json = JSON.parse(response.body)
 
   puts "HTTP status code: #{response.code}"
@@ -27,8 +32,8 @@ def compute_secret_hash(app_secret_key, app_permalink, hashed_mac_address)
 end
 
 
-def issue_post_request(app_permalink, hashed_mac_address, secret_hash)
-  post_uri = URI.parse('http://deals.mobstaging.com/loot/verify_install.json')
+def issue_post_request(server_url, app_permalink, hashed_mac_address, secret_hash)
+  post_uri = URI.parse(server_url)
   post_args = {
     'verify[permalink]' => app_permalink,
     'verify[uuid]' => hashed_mac_address,

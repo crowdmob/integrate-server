@@ -17,7 +17,8 @@ def report_install_to_crowdmob
   server_url = 'http://deals.mobstaging.com/loot/verify_install.json'
 
   # Eventually, you'll want to switch over to CrowdMob's production server
-  # located at: https://deals.crowdmob.com/loot/verify_install.json
+  # located at:
+  # server_url = https://deals.crowdmob.com/loot/verify_install.json
 
   # When you registered your app with CrowdMob, you got a secret key and a
   # permalink:

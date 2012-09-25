@@ -15,7 +15,8 @@ server_url="http://deals.mobstaging.com/loot/verify_install.json"
 # server_url="https://deals.crowdmob.com/loot/verify_install.json"
 
 # When you registered your app with CrowdMob, you got a secret key and a
-# permalink:
+# permalink.  We'll pass the permalink in as part of our POST request, and
+# we'll use the secret key in order to generate the secret hash.
 app_permalink="lulzio"
 
 uuid="6751f06f9f9b83b9c1e80936ffe59bc536700b2"

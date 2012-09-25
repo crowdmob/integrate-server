@@ -13,6 +13,8 @@ steps for this server-to-server solution.
 Overview
 --------
 
+Assuming that your company is called Lulzio...
+
 1. The Lulzio integrator launches an install campaign with CrowdMob.  *(You have to do this.)*
 2. A user installs the CrowdMob store app.
 3. On first run, the CrowdMob store app registers the user’s device with the CrowdMob server.

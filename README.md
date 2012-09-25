@@ -38,10 +38,10 @@ On iOS:
 
 1. MAC address \[hashed, encrypted, or plain-text\] (http://stackoverflow.com/questions/677530/how-can-i-programmatically-get-the-mac-address-of-an-iphone)
 
-On both Android and iOS, the CrowdMob server stores encrypted MAC addresses to
-avoid a potential security concern regarding storing MAC addresses in plain
+For both Android and iOS, the CrowdMob server stores encrypted MAC addresses
+to avoid a potential security concern regarding storing MAC addresses in plain
 text.  CrowdMob uses the secure HTTPS protocol to prevent vulnerabilities in
-transmitting MAC addresses unencrypted. CrowdMob also allows for you to
+transmitting MAC addresses in plain text. CrowdMob also allows for you to
 transmit hashed or encrypted MAC addresses if you supply your hash or
 encryption scheme to our engineers.
 

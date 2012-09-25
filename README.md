@@ -17,12 +17,12 @@ Assuming that your company is called Lulzio...
 
 ![Server to Server Integration Overview](https://lh3.googleusercontent.com/QZJcEpEqWbE8w3Lo5zwR4O0zcTcpxzTn5NlDQjxWyt6sB4h_sFoYrrBuBQFrfsOJS6l9QJTuONtCOTHGRqamiHh6NH-lcKTuAZE7bTTs6K44wlypPZg "Server to Server Integration Overview")
 
-1. The Lulzio integrator launches an install campaign with CrowdMob.  *(You have to do this.)*
+1. The Lulzio integrator launches an install campaign with CrowdMob.  *(Done by Lulzio integrator.)*
 2. A user installs the CrowdMob store app.
 3. On first run, the CrowdMob store app registers the user’s device with the CrowdMob server.
 4. The user installs the Lulzio app through the CrowdMob store.
-5. On first run, the Lulzio app registers the user’s device with the Lulzio server.  *(You have to do this.)*
-6. The Lulzio server reports the install to the CrowdMob server.  *(You have to do this.)*
+5. On first run, the Lulzio app registers the user’s device with the Lulzio server.  *(Implemented by Lulzio integrator.)*
+6. The Lulzio server reports the install to the CrowdMob server.  *(Implemented by Lulzio integrator.)*
 7. The CrowdMob server provides stats to the Lulzio integrator.
 
 

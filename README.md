@@ -96,3 +96,13 @@ HTTP status code.  The HTTP status codes mean:
 * `403`:  Your security hash doesn’t match the expected value.
 * `404`:  Your specified app permalink doesn’t correspond to an app registered with CrowdMob.
 * `200`:  Your request was well formed and was properly processed by CrowdMob’s server.
+
+
+
+Example Source Code
+-------------------
+
+Look at some example source code in:
+
+* [Ruby](https://github.com/crowdmob/integrate-server/blob/master/server.rb)
+* [Bash (shell) script / curl](https://github.com/crowdmob/integrate-server/blob/master/server.sh)

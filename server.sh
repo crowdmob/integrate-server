@@ -1,6 +1,12 @@
 #!/bin/bash
 
 
+# This Bash shell script is a working example demonstrating server-to-server
+# installs tracking integration with CrowdMob.  Although this example is in
+# Bash script, you can implement installs tracking using whatever technology
+# you use on your server.
+
+
 server_url="http://deals.mobstaging.com/loot/verify_install.json"
 app_permalink="lulzio"
 uuid="6751f06f9f9b83b9c1e80936ffe59bc536700b2"

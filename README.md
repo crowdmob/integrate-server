@@ -69,7 +69,7 @@ parameter:
 1. `permalink`:  The permalink generated for your app when you registered your app with CrowdMob.
 2. `uuid_type`:  Either `android_id`, `android_serial_number`, `mac_address`, or `android_telephony_id`, depending on which of these device identifiers your server collects.
 3. `uuid`:  The device identifier, either the Android ID, the Android serial number, the Android telephony ID, or the MAC address.
-4. `secret_hash`:  A SHA-256 hash of the following string: `<secret_key> + <permalink> + ‘,’ + <udid_type> + ‘,’ + <udid>`.
+4. `secret_hash`:  A SHA-256 hash of the following string: `<secret_key> + <permalink> + ‘,’ + <udid_type> + ‘,’ + <udid>`.  (Note that there's no comma between the secret key and the permalink.)
 
 You get your app’s secret key and permalink when you register your app with
 CrowdMob, and your mobile app and/or server must compute the user’s

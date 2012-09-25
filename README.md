@@ -15,6 +15,8 @@ Overview
 
 Assuming that your company is called Lulzio...
 
+![](https://lh3.googleusercontent.com/QZJcEpEqWbE8w3Lo5zwR4O0zcTcpxzTn5NlDQjxWyt6sB4h_sFoYrrBuBQFrfsOJS6l9QJTuONtCOTHGRqamiHh6NH-lcKTuAZE7bTTs6K44wlypPZg)
+
 1. The Lulzio integrator launches an install campaign with CrowdMob.  *(You have to do this.)*
 2. A user installs the CrowdMob store app.
 3. On first run, the CrowdMob store app registers the user’s device with the CrowdMob server.

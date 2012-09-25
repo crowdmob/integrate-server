@@ -28,12 +28,14 @@ following unique device identifiers for each device, so your server has to
 collect one of the following as well:
 
 In order of preference on Android:
+
 1. Android ID (http://developer.android.com/reference/android/provider/Settings.Secure.html#ANDROID_ID)
 2. Serial number (http://developer.android.com/reference/android/os/Build.html#SERIAL)
 3. MAC address [hashed, encrypted, or plain-text] (http://developer.android.com/reference/android/net/wifi/WifiInfo.html#getMacAddress())
 4. Telephony ID (http://developer.android.com/reference/android/telephony/TelephonyManager.html#getDeviceId())
 
 On iOS:
+
 1. MAC address [hashed, encrypted, or plain-text] (http://stackoverflow.com/questions/677530/how-can-i-programmatically-get-the-mac-address-of-an-iphone)
 
 On both Android and iOS, the CrowdMob server stores encrypted MAC addresses to

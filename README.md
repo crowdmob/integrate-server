@@ -85,7 +85,8 @@ you should send to CrowdMob's server:
 Interpreting the Response from CrowdMob’s Server
 ------------------------------------------------
 
-Once your server has issued the POST request, CrowdMob’s server returns an HTTP status code.  The HTTP status codes mean:
+Once your server has issued the POST request, CrowdMob’s server returns an
+HTTP status code.  The HTTP status codes mean:
 
 * `400`:  At least one parameter has not been supplied.
 * `403`:  Your security hash doesn’t match the expected value.

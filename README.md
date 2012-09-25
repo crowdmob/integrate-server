@@ -79,3 +79,15 @@ The following JSON expression represents the correctly nested parameters that
 you should send to CrowdMob's server:
 
 `{ verify: { permalink: <your permalink>, uuid_type: <your uuid type>, uuid: <your uuid>, secret_hash: <your secret hash> } }`
+
+
+
+Interpreting the Response from CrowdMob’s Server
+------------------------------------------------
+
+Once your server has issued the POST request, CrowdMob’s server returns an HTTP status code.  The HTTP status codes mean:
+
+* `400`:  At least one parameter has not been supplied.
+* `403`:  Your security hash doesn’t match the expected value.
+* `404`:  Your specified app permalink doesn’t correspond to an app registered with CrowdMob.
+* `200`:  Your request was well formed and was properly processed by CrowdMob’s server.

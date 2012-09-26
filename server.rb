@@ -60,7 +60,6 @@ end
 # You can run this script from the command line to see a working example of
 # server-to-server installs tracking integration.
 if __FILE__ == $0
-
   # You can test against CrowdMob's staging server located at:
   server_url = 'http://deals.mobstaging.com/loot/verify_install.json'
 

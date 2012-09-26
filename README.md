@@ -92,7 +92,7 @@ Interpreting the Response from CrowdMob’s Server
 Once your server has issued the POST request, CrowdMob’s server returns an
 HTTP status code.  The HTTP status codes mean:
 
-* `400`:  At least one parameter has not been supplied.
+* `400`:  At least one HTTP POST parameter was not supplied.
 * `403`:  Your security hash doesn’t match the expected value.
 * `404`:  Your specified app permalink doesn’t correspond to an app registered with CrowdMob.
 * `200`:  Your request was well formed and was properly processed by CrowdMob’s server.

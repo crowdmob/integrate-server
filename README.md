@@ -104,5 +104,5 @@ Example Source Code
 
 Look at some example source code in:
 
-* [Ruby](https://github.com/crowdmob/integrate-server/blob/master/server.rb)
-* [Bash (shell) script / curl](https://github.com/crowdmob/integrate-server/blob/master/server.sh)
+* [Ruby](https://github.com/crowdmob/integrate-server/blob/master/examples/server.rb)
+* [Bash (shell) script / curl](https://github.com/crowdmob/integrate-server/blob/master/examples/server.sh)

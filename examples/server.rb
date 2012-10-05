@@ -20,8 +20,8 @@ def report_install_to_crowdmob(server_url, app_secret_key, app_permalink, salt, 
   # custom server-to-server installs tracking integration solution.
   hashed_mac_address = Digest::SHA2.hexdigest(salt + mac_address)
 
-  # Compute the security hash.  The security hash is a required POST parameter
-  # which prevents forged POST requests.  This security hash consists of your
+  # Compute the secret hash.  The security hash is a required POST parameter
+  # which prevents forged POST requests.  This secret hash consists of your
   # app's permalink, a comma, the string "publisher_device_id", a comma, and
   # the previously hashed MAC address - salted with your app's secret key, all
   # SHA256 hashed.  (Note that there's no comma between the secret key salt
@@ -40,7 +40,8 @@ def report_install_to_crowdmob(server_url, app_secret_key, app_permalink, salt, 
   response, data = Net::HTTP.post_form(post_uri, post_params)
   json = JSON.parse(response.body)
 
-  # Check for a 200 HTTP status code.  This code denotes successful install tracking.
+  # Check for a 200 HTTP status code.  This code denotes successful install
+  # tracking.
   puts "HTTP status code: #{response.code}"
   puts "CrowdMob internal status code: #{json['install_status']}"
 

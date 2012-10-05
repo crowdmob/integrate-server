@@ -23,12 +23,12 @@ def report_install_to_crowdmob(server_url, app_secret_key, app_permalink, salt, 
     # solution.
     hashed_mac_address = hashlib.sha256(salt + mac_address).hexdigest()
 
-    # Compute the security hash.  The security hash is a required POST
-    # parameter which prevents forged POST requests.  This security hash
-    # consists of your app's permalink, a comma, the string
-    # "publisher_device_id", a comma, and the previously hashed MAC address -
-    # salted with your app's secret key, all SHA256 hashed.  (Note that
-    # there's no comma between the secret key salt and the permalink.)
+    # Compute the secret hash.  The secret hash is a required POST parameter
+    # which prevents forged POST requests.  This secret hash consists of your
+    # app's permalink, a comma, the string "publisher_device_id", a comma, and
+    # the previously hashed MAC address - salted with your app's secret key,
+    # all SHA256 hashed.  (Note that there's no comma between the secret key
+    # salt and the permalink.)
     secret_hash = app_secret_key + app_permalink + ',' + 'publisher_device_id' + ',' + hashed_mac_address
     secret_hash = hashlib.sha256(secret_hash).hexdigest()
 

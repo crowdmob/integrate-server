@@ -3,7 +3,7 @@
 
 
 class AppInstall {
-    private $server_url = 'http://deals.mobstaging.com/loot/verify_install.json';
+    private $server_url = 'http://deals.mobstaging.com/crave/verify_install.json';
     private $app_secret_key = '5bb75e8dd6300cadcdd07fa2c46a3c10';
     private $app_permalink = 'lulzio';
     private $salt = 'salt';

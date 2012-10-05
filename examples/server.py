@@ -11,6 +11,10 @@
 
 def report_install_to_crowdmob(server_url, app_secret_key, app_permalink, salt, mac_address):
     import hashlib
+    import httplib
+    import json
+    import urllib
+    import urlparse
 
     # Hash the MAC address.  If you already store the unique device
     # identifiers hashed, then this step is unnecessary.  If you store the
@@ -25,9 +29,28 @@ def report_install_to_crowdmob(server_url, app_secret_key, app_permalink, salt, 
     # "publisher_device_id", a comma, and the previously hashed MAC address -
     # salted with your app's secret key, all SHA256 hashed.  (Note that
     # there's no comma between the secret key salt and the permalink.)
-    secret_hash = hashlib.sha256(app_secret_key + app_permalink + ',' + 'publisher_device_id' + ',' + hashed_mac_address).hexdigest()
+    secret_hash = app_secret_key + app_permalink + ',' + 'publisher_device_id' + ',' + hashed_mac_address
+    secret_hash = hashlib.sha256(secret_hash).hexdigest()
 
-    print secret_hash
+    server_url = urlparse.urlparse(server_url)
+    params = urllib.urlencode({
+        'verify[permalink]': app_permalink,
+        'verify[uuid]': hashed_mac_address,
+        'verify[uuid_type]': 'publisher_device_id',
+        'verify[secret_hash]': secret_hash,
+    })
+    headers = {
+        'Content-type': 'application/x-www-form-urlencoded',
+        'Accept': 'text/json',
+    }
+    conn = httplib.HTTPConnection(server_url.hostname)
+    conn.request('POST', server_url.path, params, headers)
+    response = conn.getresponse()
+    data = response.read()
+    conn.close()
+
+    data = json.loads(data)
+    print response.status, response.reason, data
 
 
 

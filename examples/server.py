@@ -10,7 +10,15 @@
 
 
 def report_install_to_crowdmob(server_url, app_secret_key, app_permalink, salt, mac_address):
-    print 'hello, world!'
+    import hashlib
+
+    # Hash the MAC address.  If you already store the unique device
+    # identifiers hashed, then this step is unnecessary.  If you store the
+    # device IDs hashed, you would've worked with CrowdMob's engineers to
+    # implement a custom server-to-server installs tracking integration
+    # solution.
+    hashed_mac_address = hashlib.sha256(salt + mac_address).hexdigest()
+    print hashed_mac_address
 
 
 

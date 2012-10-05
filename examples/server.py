@@ -32,7 +32,9 @@ def report_install_to_crowdmob(server_url, app_secret_key, app_permalink, salt, 
     secret_hash = app_secret_key + app_permalink + ',' + 'publisher_device_id' + ',' + hashed_mac_address
     secret_hash = hashlib.sha256(secret_hash).hexdigest()
 
+    # Finally, issue the POST request to CrowdMob's server:
     server_url = urlparse.urlparse(server_url)
+    # The POST parameters must be nested within the "verify" namespace:
     params = urllib.urlencode({
         'verify[permalink]': app_permalink,
         'verify[uuid]': hashed_mac_address,
@@ -49,8 +51,20 @@ def report_install_to_crowdmob(server_url, app_secret_key, app_permalink, salt, 
     data = response.read()
     conn.close()
 
+    # Check for a 200 HTTP status code.  This code denotes successful install tracking.
     data = json.loads(data)
-    print response.status, response.reason, data
+    print 'HTTP status code:', response.status
+    print 'CrowdMob internal status code:', data['install_status']
+
+    # This table explains what the different status code combinations denote:
+    #   HTTP Status Code    CrowdMob Internal Status Code   Meaning
+    #   ----------------    -----------------------------   -------
+    #   400                 1001                            You didn't supply your app's permalink as an HTTP POST parameter.
+    #   400                 1002                            You didn't specify the unique device identifier type as an HTTP POST parameter.  (In the case of server-to-server installs tracking, this parameter should be the string "publisher_device_id".)
+    #   400                 1003                            You didn't specify the unique device identifier as an HTTP POST parameter.  (Typically a salted hashed MAC address, but could be some other unique device identifier that you collect on your server.)
+    #   404                 1004                            The app permalink that you specified doesn't correspond to any app registered on CrowdMob's server.
+    #   403                 1005                            The secret hash that you computed doesn't correspond to the secret hash that CrowdMob's server computed.  (This could be a forged request?)
+    #   200                 Any                             CrowdMob's server successfully tracked the install.
 
 
 

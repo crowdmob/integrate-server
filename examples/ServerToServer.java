@@ -42,13 +42,7 @@ public class ServerToServer {
 
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setDoOutput(true);
-        conn.setDoInput(true);
-        conn.setInstanceFollowRedirects(false);
         conn.setRequestMethod("POST");
-        conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-        conn.setRequestProperty("charset", "utf-8");
-        conn.setRequestProperty("Content-Length", "" + Integer.toString(params.getBytes().length));
-        conn.setUseCaches(false);
 
         DataOutputStream outputStream = new DataOutputStream(conn.getOutputStream());
         outputStream.writeBytes(params);

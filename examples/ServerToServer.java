@@ -30,20 +30,6 @@ public class ServerToServer {
     private static String appPermalink = "lulzio";
     private static String salt = "salt";
 
-    private static String streamToString(DataInputStream stream) {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-        String line;
-        StringBuilder builder = new StringBuilder();
-        try {
-            while ((line = reader.readLine()) != null) {
-                builder.append(line);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return builder.toString();
-    }
-
     private static void reportToCrowdmob(String macAddress) throws Exception {
         String hashedMacAddress = Hash.hash("SHA-256", salt, macAddress);
         String secretHash = Hash.hash("SHA-256", appSecretKey, appPermalink + "," + "publisher_device_id" + "," + hashedMacAddress);
@@ -75,6 +61,20 @@ public class ServerToServer {
 
         System.out.println(httpResponseCode);
         System.out.println(httpResponseBody);
+    }
+
+    private static String streamToString(DataInputStream stream) {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+        String line;
+        StringBuilder builder = new StringBuilder();
+        try {
+            while ((line = reader.readLine()) != null) {
+                builder.append(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return builder.toString();
     }
 
     public static void main(String[] args) throws Exception {

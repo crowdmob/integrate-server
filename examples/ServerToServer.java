@@ -11,7 +11,11 @@
 
 
 
+import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.InputStreamReader;
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.MessageDigest;
@@ -25,6 +29,20 @@ public class ServerToServer {
     private static String appSecretKey = "5bb75e8dd6300cadcdd07fa2c46a3c10";
     private static String appPermalink = "lulzio";
     private static String salt = "salt";
+
+    private static String streamToString(DataInputStream stream) {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+        String line;
+        StringBuilder builder = new StringBuilder();
+        try {
+            while ((line = reader.readLine()) != null) {
+                builder.append(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return builder.toString();
+    }
 
     private static void reportToCrowdmob(String macAddress) throws Exception {
         String hashedMacAddress = Hash.hash("SHA-256", salt, macAddress);
@@ -46,17 +64,17 @@ public class ServerToServer {
         conn.setRequestProperty("Content-Length", "" + Integer.toString(params.getBytes().length));
         conn.setUseCaches(false);
 
-        DataOutputStream stream = new DataOutputStream(conn.getOutputStream());
-        stream.writeBytes(params);
-        stream.flush();
-        stream.close();
+        DataOutputStream outputStream = new DataOutputStream(conn.getOutputStream());
+        outputStream.writeBytes(params);
+        outputStream.flush();
+        outputStream.close();
         Integer httpResponseCode = conn.getResponseCode();
+        DataInputStream inputStream = new DataInputStream(conn.getInputStream());
+        String httpResponseBody = streamToString(inputStream);
         conn.disconnect();
 
-        System.out.println(hashedMacAddress);
-        System.out.println(secretHash);
-        System.out.println(params);
         System.out.println(httpResponseCode);
+        System.out.println(httpResponseBody);
     }
 
     public static void main(String[] args) throws Exception {

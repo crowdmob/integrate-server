@@ -55,7 +55,7 @@ public class ServerToServer {
     // requirements as a salt.
     private static String salt = "salt";
 
-    private static void reportToCrowdmob(String macAddress) throws Exception {
+    private static void reportToCrowdMob(String macAddress) throws Exception {
         // Hash the MAC address.  If you already store the unique device
         // identifiers hashed, then this step is unnecessary.  If you store
         // the device IDs hashed, you would've worked with CrowdMob's
@@ -126,7 +126,7 @@ public class ServerToServer {
 
     public static void main(String[] args) throws Exception {
         String macAddress = "11:11:11:11:11:11";
-        reportToCrowdmob(macAddress);
+        reportToCrowdMob(macAddress);
     }
 
 }

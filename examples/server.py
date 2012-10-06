@@ -115,8 +115,8 @@ if __name__ == '__main__':
     CrowdMob.app_secret_key = '5bb75e8dd6300cadcdd07fa2c46a3c10'
     CrowdMob.app_permalink = 'lulzio'
 
-    # This is an example MAC address, stored in your server's database, used to
-    # uniquely identify a device:
+    # This is an example MAC address, stored in your server's database, used
+    # to uniquely identify a device:
     mac_address = '11:11:11:11:11:11'
 
     # Report an install of your app on the specified device to CrowdMob:

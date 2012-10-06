@@ -4,10 +4,10 @@
 // on your server.
 
 // Compile this program with the command:
-//    $ javac ServerToServer.java
+//    $ javac ServerToServer.java -classpath json-20090211.jar
 //
 // Then run this program with the command:
-//    $ java ServerToServer
+//    $ java ServerToServer -classpath json-20090211.jar
 
 
 
@@ -19,6 +19,9 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.MessageDigest;
+
+// import org.json.JSONException;
+import org.json.JSONObject;
 
 
 
@@ -69,6 +72,27 @@ public class ServerToServer {
             e.printStackTrace();
         }
         return builder.toString();
+    }
+
+    private static Integer jsonResponseToCrowdMobStatusCode(String content) {
+        Integer crowdMobStatusCode = null;
+        Object json = null;
+
+        if (content != null) {
+            try {
+                json = new JSONObject(content);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (json != null) {
+                try {
+                    crowdMobStatusCode = Integer.parseInt(((JSONObject) json).getString("install_status"));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return crowdMobStatusCode;
     }
 
     public static void main(String[] args) throws Exception {

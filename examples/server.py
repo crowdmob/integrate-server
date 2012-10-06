@@ -7,6 +7,9 @@
 # Python, you can implement installs tracking using whatever technology you
 # use on your server.
 
+# Run this script with:
+#   python server.py
+
 
 
 import hashlib

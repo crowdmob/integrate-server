@@ -7,6 +7,8 @@
 # can implement installs tracking using whatever technology you use on your
 # server.
 
+# Run this script with:
+#   ruby server.rb
 
 
 require 'digest'

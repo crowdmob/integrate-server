@@ -4,10 +4,10 @@
 // on your server.
 
 // Compile this program with the command:
-//    $ javac ServerToServer.java -classpath json-20090211.jar
+//    $ javac ServerToServer.java
 //
 // Then run this program with the command:
-//    $ java ServerToServer -classpath json-20090211.jar
+//    $ java ServerToServer
 
 
 
@@ -19,9 +19,6 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.MessageDigest;
-
-// import org.json.JSONException;
-import org.json.JSONObject;
 
 
 
@@ -51,13 +48,13 @@ public class ServerToServer {
         outputStream.writeBytes(params);
         outputStream.flush();
         outputStream.close();
-        Integer httpResponseCode = conn.getResponseCode();
+        Integer httpStatusCode = conn.getResponseCode();
         DataInputStream inputStream = new DataInputStream(conn.getInputStream());
         String httpResponseBody = streamToString(inputStream);
         conn.disconnect();
 
-        System.out.println(httpResponseCode);
-        System.out.println(httpResponseBody);
+        System.out.println("HTTP status code: " + httpStatusCode);
+        System.out.println("HTTP response body: " + httpResponseBody);
     }
 
     private static String streamToString(DataInputStream stream) {
@@ -72,27 +69,6 @@ public class ServerToServer {
             e.printStackTrace();
         }
         return builder.toString();
-    }
-
-    private static Integer jsonResponseToCrowdMobStatusCode(String content) {
-        Integer crowdMobStatusCode = null;
-        Object json = null;
-
-        if (content != null) {
-            try {
-                json = new JSONObject(content);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            if (json != null) {
-                try {
-                    crowdMobStatusCode = Integer.parseInt(((JSONObject) json).getString("install_status"));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return crowdMobStatusCode;
     }
 
     public static void main(String[] args) throws Exception {

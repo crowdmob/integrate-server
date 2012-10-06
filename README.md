@@ -104,7 +104,7 @@ Example Source Code
 
 Look at some example source code in:
 
-* [Java](https://github.com/crowdmob/integrate-server/blob/master/examples/server.java)
+* [Java](https://github.com/crowdmob/integrate-server/blob/master/examples/ServerToServer.java)
 * [PHP](https://github.com/crowdmob/integrate-server/blob/master/examples/server.php)
 * [Python](https://github.com/crowdmob/integrate-server/blob/master/examples/server.py)
 * [Ruby](https://github.com/crowdmob/integrate-server/blob/master/examples/server.rb)

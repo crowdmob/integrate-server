@@ -16,11 +16,11 @@
 
 class AppInstall {
     // You can test against CrowdMob's staging server located at:
-    private $server_url = 'http://deals.mobstaging.com/crave/verify_install.json';
+    private $base_url = 'http://deals.mobstaging.com';
 
     // Eventually, you'll want to switch over to CrowdMob's production server
     // located at:
-    // private $server_url = 'https://deals.crowdmob.com/crave/verify_install.json';
+    // private $base_url = 'https://deals.crowdmob.com';
 
     // When you registered your app with CrowdMob, you got a secret key and a
     // permalink:
@@ -89,6 +89,7 @@ class AppInstall {
     }
 
     public function report_to_crowdmob($mac_address) {
+        $url = $this->base_url . '/crave/verify_install.json';
         $hashed_mac_address = $this->hash_mac_address($mac_address);
         $secret_hash = $this->compute_secret_hash($hashed_mac_address);
         $fields = $this->populate_post_fields($hashed_mac_address, $secret_hash);
@@ -97,7 +98,7 @@ class AppInstall {
         // Finally, issue the POST request to CrowdMob's server:
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_URL, $this->server_url);
+        curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, count($fields));
         curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
         $response_body = curl_exec($ch);

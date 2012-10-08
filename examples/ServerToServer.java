@@ -1,13 +1,15 @@
-// This Java program is a working example demonstrating server-to-server
-// installs tracking integration with CrowdMob.  Although this example is in
-// Java, you can implement installs tracking using whatever technology you use
-// on your server.
-
-// Compile this program with the command:
-//    $ javac ServerToServer.java
-//
-// Then run this program with the command:
-//    $ java ServerToServer
+/*
+ | This Java program is a working example demonstrating server-to-server
+ | installs tracking integration with CrowdMob.  Although this example is in
+ | Java, you can implement installs tracking using whatever technology you use
+ | on your server.
+ |
+ | Compile this program with the command:
+ |    $ javac ServerToServer.java
+ |
+ | Then run this program with the command:
+ |    $ java ServerToServer
+ */
 
 
 
@@ -25,11 +27,11 @@ import java.security.MessageDigest;
 public class ServerToServer {
 
     // You can test against CrowdMob's staging server located at:
-    private static String serverUrl = "http://deals.mobstaging.com/crave/verify_install.json";
+    private static String baseUrl = "http://deals.mobstaging.com";
 
     // Eventually, you'll want to switch over to CrowdMob's production server
     // located at:
-    // private static String serverUrl = "https://deals.crowdmob.com/crave/verify_install.json";
+    // private static String baseUrl = "https://deals.crowdmob.com";
 
     // When you registered your app with CrowdMob, you got a secret key and a
     // permalink:
@@ -72,7 +74,7 @@ public class ServerToServer {
         // permalink.)
         String secretHash = Hash.hash("SHA-256", appSecretKey, appPermalink + "," + "publisher_device_id" + "," + hashedMacAddress);
 
-        URL url = new URL(serverUrl);
+        URL url = new URL(baseUrl + "/crave/verify_install.json");
         // Construct the POST parameters.  Note that the POST parameters must
         // be nested within the "verify" namespace:
         String params = "verify[permalink]=" + appPermalink;

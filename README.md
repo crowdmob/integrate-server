@@ -81,7 +81,7 @@ The following JSON expression represents the parameters that you should send to 
 `{ permalink: <your permalink>, uuid_type: <your uuid type>, uuid: <your uuid>, secret_hash: <your secret hash> }`
 
 Your final url should look like the following:
-`https://deals.crowdmob.com/crave/verify_install.json?permalink=<your permalink>&uuid_type=<your uuid type>&uuid=<your uuid>&secret_hash=<your secret hash>`
+```https://deals.crowdmob.com/crave/verify_install.json?permalink=<your permalink>&uuid_type=<your uuid type>&uuid=<your uuid>&secret_hash=<your secret hash>```
 
 Interpreting the Response from CrowdMob’s Server
 ------------------------------------------------

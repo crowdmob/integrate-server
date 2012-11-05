@@ -26,17 +26,16 @@ Every time we drive an install of your application, your server should call our 
 Overview
 --------
 
-Assuming that your company is called Lulzio...
 
-![Server to Server Integration Overview](https://lh3.googleusercontent.com/QZJcEpEqWbE8w3Lo5zwR4O0zcTcpxzTn5NlDQjxWyt6sB4h_sFoYrrBuBQFrfsOJS6l9QJTuONtCOTHGRqamiHh6NH-lcKTuAZE7bTTs6K44wlypPZg "Server to Server Integration Overview")
+![Server to Server Integration Overview](http://mobnet.s3.amazonaws.com/crowdmob-integration-overview.png "Server to Server Integration Overview")
 
-1. The Lulzio integrator launches an install campaign with CrowdMob.  *(Done by Lulzio integrator.)*
-2. A user installs the CrowdMob store app.
-3. On first run, the CrowdMob store app registers the user’s device with the CrowdMob server.
-4. The user installs the Lulzio app through the CrowdMob store.
-5. On first run, the Lulzio app registers the user’s device with the Lulzio server.  *(Implemented by Lulzio integrator.)*
-6. The Lulzio server reports the install to the CrowdMob server.  *(Implemented by Lulzio integrator.)*
-7. The CrowdMob server provides stats to the Lulzio integrator.
+1. The mobile application launches an install campaign with CrowdMob.  *(Done by mobile app developer.)*
+2. A user sees an advertisement powered by CrowdMob.
+3. CrowdMob registers the user’s device with the CrowdMob server.  Optionally, CrowdMob can issue a POST with the device information so the mobile app developer knows the device was referred by CrowdMob.
+4. The user installs the mobile app through either Apple's App Store or Google's Play Store.
+5. On first run, the mobile app registers the user’s device with the mobile app's server.  *(Implemented by mobile app developer.)*
+6. The mobile app server reports the install to the CrowdMob server.  *(Implemented by mobile app developer.)*
+7. The CrowdMob server provides stats to the mobile app developer.
 
 
 

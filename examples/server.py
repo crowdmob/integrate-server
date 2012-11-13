@@ -66,19 +66,18 @@ class CrowdMob(object):
         # Compute the secret hash.  The secret hash is a required POST
         # parameter which prevents forged POST requests.  This secret hash
         # consists of your app's permalink, a comma, the string
-        # "publisher_device_id", a comma, and the previously hashed MAC
-        # address - salted with your app's secret key, all SHA256 hashed.
-        # (Note that there's no comma between the secret key salt and the
-        # permalink.)
-        secret_hash = cls.app_secret_key + cls.app_permalink + ',' + 'publisher_device_id' + ',' + hashed_mac_address
+        # "campaign_uuid", a comma, and the previously hashed MAC address -
+        # salted with your app's secret key, all SHA256 hashed.  (Note that
+        # there's no comma between the secret key salt and the permalink.)
+        secret_hash = cls.app_secret_key + cls.app_permalink + ',' + 'campaign_uuid' + ',' + hashed_mac_address
         secret_hash = hashlib.sha256(secret_hash).hexdigest()
 
         # The POST parameters must be nested within the "verify" namespace:
         params = urllib.urlencode({
-            'verify[permalink]': cls.app_permalink,
-            'verify[uuid]': hashed_mac_address,
-            'verify[uuid_type]': 'publisher_device_id',
-            'verify[secret_hash]': secret_hash,
+            'permalink': cls.app_permalink,
+            'uuid': hashed_mac_address,
+            'uuid_type': 'campaign_uuid',
+            'secret_hash': secret_hash,
         })
         headers = {
             'Content-type': 'application/x-www-form-urlencoded',
@@ -95,13 +94,13 @@ class CrowdMob(object):
         # Check for a 200 HTTP status code.  This code denotes successful install tracking.
         data = json.loads(data)
         print 'HTTP status code:', response.status
-        print 'CrowdMob internal status code:', data['install_status']
+        print 'CrowdMob internal status code:', data['action_status']
 
         # This table explains what the different status code combinations denote:
         #   HTTP Status Code    CrowdMob Internal Status Code   Meaning
         #   ----------------    -----------------------------   -------
         #   400                 1001                            You didn't supply your app's permalink as an HTTP POST parameter.
-        #   400                 1002                            You didn't specify the unique device identifier type as an HTTP POST parameter.  (In the case of server-to-server installs tracking, this parameter should be the string "publisher_device_id".)
+        #   400                 1002                            You didn't specify the unique device identifier type as an HTTP POST parameter.  (In the case of server-to-server installs tracking, this parameter should be the string "campaign_uuid".)
         #   400                 1003                            You didn't specify the unique device identifier as an HTTP POST parameter.  (Typically a salted hashed MAC address, but could be some other unique device identifier that you collect on your server.)
         #   404                 1004                            The app permalink that you specified doesn't correspond to any app registered on CrowdMob's server.
         #   403                 1005                            The secret hash that you computed doesn't correspond to the secret hash that CrowdMob's server computed.  (This could be a forged request?)

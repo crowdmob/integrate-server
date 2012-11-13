@@ -68,8 +68,7 @@ class AppInstall {
     }
 
     private function populate_post_fields($hashed_mac_address, $secret_hash) {
-      // Construct the POST parameters.  Note that the POST parameters must be
-      // nested within the "verify" namespace:
+      // Construct the POST parameters:
       $fields = array(
           'permalink'   => $this->app_permalink,
           'uuid'        => $hashed_mac_address,

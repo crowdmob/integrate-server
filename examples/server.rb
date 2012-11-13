@@ -68,7 +68,7 @@ class CrowdMob
     # and the permalink.)
     secret_hash = Digest::SHA2.hexdigest(APP_SECRET_KEY + APP_PERMALINK + ',' + 'campaign_uuid' + ',' + hashed_mac_address)
 
-    # The POST parameters must be nested within the "verify" namespace:
+    # The POST parameters:
     post_params = {
       'permalink' => APP_PERMALINK,
       'uuid' => hashed_mac_address,

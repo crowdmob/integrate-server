@@ -72,7 +72,7 @@ class CrowdMob(object):
         secret_hash = cls.app_secret_key + cls.app_permalink + ',' + 'campaign_uuid' + ',' + hashed_mac_address
         secret_hash = hashlib.sha256(secret_hash).hexdigest()
 
-        # The POST parameters must be nested within the "verify" namespace:
+        # The POST parameters:
         params = urllib.urlencode({
             'permalink': cls.app_permalink,
             'uuid': hashed_mac_address,

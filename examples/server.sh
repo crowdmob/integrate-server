@@ -37,11 +37,10 @@ uuid="6751f06f9f9b83b9c1e80936ffe59bc536700b2"
 # The secret hash is a SHA-256 hash of the following string:
 #   <secret_key> + <permalink> + ‘,’ + <udid_type> + ‘,’ + <udid>`
 # Note that there's no comma between the secret key and the permalink.
-secret_hash="b53cd8652cb1feb3b10a087a6ed97566c3c50544607c9c086d7fbbb3d13f8c00"
+secret_hash="9c52fc3c8dc4e640b6112ef27fb3c5245f63537558d725fbafd6797f4b2a88c6"
 
 
 
-# Finally, issue the POST request, passing in the required parameters.  Note
-# that the parameters are nested within the "verify" namespace.
-curl --data "verify[permalink]=$app_permalink&verify[uuid]=$uuid&verify[uuid_type]=publisher_device_id&verify[secret_hash]=$secret_hash" $server_url
+# Finally, issue the POST request, passing in the required parameters:
+curl --data "permalink=$app_permalink&uuid=$uuid&uuid_type=campaign_uuid&secret_hash=$secret_hash" $server_url
 echo

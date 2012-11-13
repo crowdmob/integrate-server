@@ -94,7 +94,7 @@ class CrowdMob(object):
         # Check for a 200 HTTP status code.  This code denotes successful install tracking.
         data = json.loads(data)
         print 'HTTP status code:', response.status
-        print 'CrowdMob internal status code:', data['action_status']
+        print 'CrowdMob internal (action) status code:', data['action_status']
 
         # This table explains what the different status code combinations denote:
         #   HTTP Status Code    CrowdMob Internal Status Code   Meaning

@@ -108,7 +108,7 @@ class AppInstall {
         // Check for a 200 HTTP status code.  This code denotes successful
         // install tracking.
         print 'HTTP status code: ' . $http_status . "\n";
-        print 'CrowdMob internal status code: ' . $response_body->action_status . "\n";
+        print 'CrowdMob internal (action) status code: ' . $response_body->action_status . "\n";
 
         // This table explains what the different status code combinations denote:
         //  HTTP Status Code    CrowdMob Internal Status Code   Meaning

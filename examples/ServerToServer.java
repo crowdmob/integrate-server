@@ -68,19 +68,17 @@ public class ServerToServer {
         // Compute the secret hash.  The secret hash is a required POST
         // parameter which prevents forged POST requests.  This secret hash
         // consists of your app's permalink, a comma, the string
-        // "publisher_device_id", a comma, and the previously hashed MAC
-        // address - salted with your app's secret key, all SHA256 hashed.
-        // (Note that there's no comma between the secret key salt and the
-        // permalink.)
-        String secretHash = Hash.hash("SHA-256", appSecretKey, appPermalink + "," + "publisher_device_id" + "," + hashedMacAddress);
+        // "campaign_uuid", a comma, and the previously hashed MAC address -
+        // salted with your app's secret key, all SHA256 hashed.  (Note that
+        // there's no comma between the secret key salt and the permalink.)
+        String secretHash = Hash.hash("SHA-256", appSecretKey, appPermalink + "," + "campaign_uuid" + "," + hashedMacAddress);
 
         URL url = new URL(baseUrl + "/crave/verify_install.json");
-        // Construct the POST parameters.  Note that the POST parameters must
-        // be nested within the "verify" namespace:
-        String params = "verify[permalink]=" + appPermalink;
-        params += "&verify[uuid]=" + hashedMacAddress;
-        params += "&verify[uuid_type]=" + "publisher_device_id";
-        params += "&verify[secret_hash]=" + secretHash;
+        // Construct the POST parameters:
+        String params = "permalink=" + appPermalink;
+        params += "&uuid=" + hashedMacAddress;
+        params += "&uuid_type=" + "campaign_uuid";
+        params += "&secret_hash=" + secretHash;
 
         // Finally, issue the POST request to CrowdMob's server:
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -105,7 +103,7 @@ public class ServerToServer {
         //  HTTP Status Code    CrowdMob Internal Status Code   Meaning
         //  ----------------    -----------------------------   -------
         //  400                 1001                            You didn't supply your app's permalink as an HTTP POST parameter.
-        //  400                 1002                            You didn't specify the unique device identifier type as an HTTP POST parameter.  (In the case of server-to-server installs tracking, this parameter should be the string "publisher_device_id".)
+        //  400                 1002                            You didn't specify the unique device identifier type as an HTTP POST parameter.  (In the case of server-to-server installs tracking, this parameter should be the string "campaign_uuid".)
         //  400                 1003                            You didn't specify the unique device identifier as an HTTP POST parameter.  (Typically a salted hashed MAC address, but could be some other unique device identifier that you collect on your server.)
         //  404                 1004                            The app permalink that you specified doesn't correspond to any app registered on CrowdMob's server.
         //  403                 1005                            The secret hash that you computed doesn't correspond to the secret hash that CrowdMob's server computed.  (This could be a forged request?)

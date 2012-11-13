@@ -83,7 +83,7 @@ class CrowdMob
     # Check for a 200 HTTP status code.  This code denotes successful install
     # tracking.
     puts "HTTP status code: #{response.code}"
-    puts "CrowdMob internal status code: #{json['install_status']}"
+    puts "CrowdMob internal status code: #{json['action_status']}"
 
     # This table explains what the different status code combinations denote:
     #   HTTP Status Code    CrowdMob Internal Status Code   Meaning

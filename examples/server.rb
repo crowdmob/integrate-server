@@ -62,18 +62,18 @@ class CrowdMob
 
     # Compute the secret hash.  The security hash is a required POST parameter
     # which prevents forged POST requests.  This secret hash consists of your
-    # app's permalink, a comma, the string "publisher_device_id", a comma, and
-    # the previously hashed MAC address - salted with your app's secret key,
-    # all SHA256 hashed.  (Note that there's no comma between the secret key
-    # salt and the permalink.)
-    secret_hash = Digest::SHA2.hexdigest(APP_SECRET_KEY + APP_PERMALINK + ',' + 'publisher_device_id' + ',' + hashed_mac_address)
+    # app's permalink, a comma, the string "campaign_uuid", a comma, and the
+    # previously hashed MAC address - salted with your app's secret key, all
+    # SHA256 hashed.  (Note that there's no comma between the secret key salt
+    # and the permalink.)
+    secret_hash = Digest::SHA2.hexdigest(APP_SECRET_KEY + APP_PERMALINK + ',' + 'campaign_uuid' + ',' + hashed_mac_address)
 
     # The POST parameters must be nested within the "verify" namespace:
     post_params = {
-      'verify[permalink]' => APP_PERMALINK,
-      'verify[uuid]' => hashed_mac_address,
-      'verify[uuid_type]' => 'publisher_device_id',
-      'verify[secret_hash]' => secret_hash
+      'permalink' => APP_PERMALINK,
+      'uuid' => hashed_mac_address,
+      'uuid_type' => 'campaign_uuid',
+      'secret_hash' => secret_hash
     }
 
     # Finally, issue the POST request to CrowdMob's server:
@@ -89,7 +89,7 @@ class CrowdMob
     #   HTTP Status Code    CrowdMob Internal Status Code   Meaning
     #   ----------------    -----------------------------   -------
     #   400                 1001                            You didn't supply your app's permalink as an HTTP POST parameter.
-    #   400                 1002                            You didn't specify the unique device identifier type as an HTTP POST parameter.  (In the case of server-to-server installs tracking, this parameter should be the string "publisher_device_id".)
+    #   400                 1002                            You didn't specify the unique device identifier type as an HTTP POST parameter.  (In the case of server-to-server installs tracking, this parameter should be the string "campaign_uuid".)
     #   400                 1003                            You didn't specify the unique device identifier as an HTTP POST parameter.  (Typically a salted hashed MAC address, but could be some other unique device identifier that you collect on your server.)
     #   404                 1004                            The app permalink that you specified doesn't correspond to any app registered on CrowdMob's server.
     #   403                 1005                            The secret hash that you computed doesn't correspond to the secret hash that CrowdMob's server computed.  (This could be a forged request?)

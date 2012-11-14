@@ -9,10 +9,15 @@ load 'base.rb'
 
 
 module CrowdMob::Installs
+  class << self
+    attr_accessor :app_secret_key
+    attr_accessor :app_permalink
+  end
+
   # When you registered your app with CrowdMob, you got an app secret key and
   # a permalink:
-  APP_SECRET_KEY = '5bb75e8dd6300cadcdd07fa2c46a3c10'
-  APP_PERMALINK = 'lulzio'
+  @app_secret_key = '5bb75e8dd6300cadcdd07fa2c46a3c10'
+  @app_permalink = 'lulzio'
 
   # If you didn't record your app's secret key and permalink when you regist
   # registered your app with CrowdMob, you can find it on your app's page on
@@ -33,7 +38,7 @@ module CrowdMob::Installs
   @@salt = 'salt'
 
   def self.report(mac_address)
-    url = CrowdMob::BASE_URL + '/crave/verify_install.json'
+    url = CrowdMob.base_url + '/crave/verify_install.json'
     uri = URI.parse(url)
 
     # Hash the MAC address.  If you already store the unique device
@@ -49,11 +54,11 @@ module CrowdMob::Installs
     # previously hashed MAC address - salted with your app's secret key, all
     # SHA256 hashed.  (Note that there's no comma between the secret key salt
     # and the permalink.)
-    secret_hash = Digest::SHA2.hexdigest(APP_SECRET_KEY + APP_PERMALINK + ',' + 'campaign_uuid' + ',' + hashed_mac_address)
+    secret_hash = Digest::SHA2.hexdigest(@app_secret_key + @app_permalink + ',' + 'campaign_uuid' + ',' + hashed_mac_address)
 
     # The POST parameters:
     params = {
-      'permalink' => APP_PERMALINK,
+      'permalink' => @app_permalink,
       'uuid' => hashed_mac_address,
       'uuid_type' => 'campaign_uuid',
       'secret_hash' => secret_hash
@@ -86,9 +91,9 @@ end
 # You can run this script from the command line to see a working example of
 # server-to-server integration.
 if __FILE__ == $0
-  CrowdMob::BASE_URL = 'http://deals.mobstaging.com'
-  CrowdMob::Installs::APP_SECRET_KEY = '5bb75e8dd6300cadcdd07fa2c46a3c10'
-  CrowdMob::Installs::APP_PERMALINK = 'lulzio'
+  CrowdMob.base_url = 'http://deals.mobstaging.com'
+  CrowdMob::Installs.app_secret_key = '5bb75e8dd6300cadcdd07fa2c46a3c10'
+  CrowdMob::Installs.app_permalink = 'lulzio'
 
   # This is an example MAC address, stored in your server's database, used to
   # uniquely identify a device:

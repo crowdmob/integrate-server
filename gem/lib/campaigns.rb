@@ -10,13 +10,18 @@ load 'base.rb'
 
 
 module CrowdMob::Campaigns
+  class << self
+    attr_accessor :organization_secret_key
+    attr_accessor :organization_permalink
+  end
+
   # When you registered your organization with CrowdMob, you got an
   # organization secret key and permalink:
-  ORGANIZATION_SECRET_KEY = '9cbfbe10e13f2a30cb6509ef0e09445b'
-  ORGANIZATION_PERMALINK = 'crowdmob'
+  @organization_secret_key = '9cbfbe10e13f2a30cb6509ef0e09445b'
+  @organization_permalink = 'crowdmob'
 
   def self.create(active, params)
-    url = CrowdMob::BASE_URL + '/organizations/' + ORGANIZATION_PERMALINK + '/sponsored_action_campaigns.json'
+    url = CrowdMob.base_url + '/organizations/' + @organization_permalink + '/sponsored_action_campaigns.json'
     uri = URI.parse(url)
     now, secret_hash = self.compute_secret_hash
     params = {
@@ -36,7 +41,7 @@ module CrowdMob::Campaigns
   end
 
   def self.edit(campaign_id, active, params)
-    url = CrowdMob::BASE_URL + '/organizations/' + ORGANIZATION_PERMALINK + '/sponsored_action_campaigns/' + campaign_id.to_s + '.json'
+    url = CrowdMob.base_url + '/organizations/' + @organization_permalink + '/sponsored_action_campaigns/' + campaign_id.to_s + '.json'
     now, secret_hash = self.compute_secret_hash
     url += '?datetime=' + now + '&secret_hash=' + secret_hash + '&active=' + active.to_s
     params.each { |key, value| url += '&sponsored_action_campaign[' + key.to_s + ']=' + value.to_s }
@@ -47,7 +52,7 @@ module CrowdMob::Campaigns
   end
 
   def self.delete(campaign_id)
-    url = CrowdMob::BASE_URL + '/organizations/' + ORGANIZATION_PERMALINK + '/sponsored_action_campaigns/' + campaign_id.to_s + '.json'
+    url = CrowdMob.base_url + '/organizations/' + @organization_permalink + '/sponsored_action_campaigns/' + campaign_id.to_s + '.json'
     now, secret_hash = self.compute_secret_hash
     url += '?datetime=' + now + '&secret_hash=' + secret_hash
     uri = URI.parse(url)
@@ -56,7 +61,7 @@ module CrowdMob::Campaigns
 
   def self.compute_secret_hash
     now = DateTime.now.iso8601
-    secret_hash = ORGANIZATION_SECRET_KEY + ORGANIZATION_PERMALINK + ',' + now
+    secret_hash = @organization_secret_key + @organization_permalink + ',' + now
     secret_hash = Digest::SHA2.hexdigest(secret_hash)
     [now, secret_hash]
   end
@@ -76,9 +81,9 @@ end
 # You can run this script from the command line to see a working example of
 # server-to-server integration.
 if __FILE__ == $0
-  CrowdMob::BASE_URL = 'http://deals.mobstaging.com'
-  CrowdMob::Campaigns::ORGANIZATION_SECRET_KEY = '9cbfbe10e13f2a30cb6509ef0e09445b'
-  CrowdMob::Campaigns::ORGANIZATION_PERMALINK = 'crowdmob'
+  CrowdMob.base_url = 'http://deals.mobstaging.com'
+  CrowdMob::Campaigns.organization_secret_key = '9cbfbe10e13f2a30cb6509ef0e09445b'
+  CrowdMob::Campaigns.organization_permalink = 'crowdmob'
 
   # Create a campaign:
   now = DateTime.now

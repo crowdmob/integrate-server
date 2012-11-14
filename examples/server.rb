@@ -108,6 +108,7 @@ class CrowdMob
     post_uri = URI.parse(post_url)
     now = DateTime.now.iso8601
     secret_hash = ORGANIZATION_SECRET_KEY + ORGANIZATION_PERMALINK + ',' + now
+    secret_hash = Digest::SHA2.hexdigest(secret_hash)
     post_params = {
       'datetime' => now,
       'secret_hash' => secret_hash,
@@ -116,12 +117,27 @@ class CrowdMob
       'sponsored_action_campaign[max_spend_per_day_in_cents]' => 10,
       'sponsored_action_campaign[starts_at]' => now,
       'sponsored_action_campaign[ends_at]' => now,
-      'sponsored_action_campaign[approved_at]' => now,
       'sponsored_action_campaign[kind]' => 'install',
+      'active' => true,
     }
     response, data = Net::HTTP.post_form(post_uri, post_params)
     json = JSON.parse(response.body)
-    puts response.body
+    json
+  end
+
+  def self.delete_campaign(campaign_id)
+    delete_url = BASE_URL + '/organizations/' + ORGANIZATION_PERMALINK + '/sponsored_action_campaigns/' + campaign_id.to_s + '.json'
+    now = DateTime.now.iso8601
+    secret_hash = ORGANIZATION_SECRET_KEY + ORGANIZATION_PERMALINK + ',' + now
+    secret_hash = Digest::SHA2.hexdigest(secret_hash)
+    delete_url += '?datetime=' + now + '&secret_hash=' + secret_hash
+    delete_uri = URI.parse(delete_url)
+
+    http = Net::HTTP.new(delete_uri.host, delete_uri.port)
+    http.use_ssl = delete_uri.scheme == 'https'
+    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+    request = Net::HTTP::Delete.new(delete_uri.request_uri)
+    response = http.request(request)
   end
 end
 
@@ -143,5 +159,6 @@ if __FILE__ == $0
   # TODO: Uncomment this line later...  Just commenting it out for now to test creating campaigns.
   # CrowdMob.report_install(mac_address)
 
-  CrowdMob.create_campaign
+  campaign = CrowdMob.create_campaign
+  CrowdMob.delete_campaign(campaign['id'])
 end

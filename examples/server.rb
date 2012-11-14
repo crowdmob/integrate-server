@@ -24,7 +24,12 @@ class CrowdMob
 
   # Eventually, you'll want to switch over to CrowdMob's production server
   # located at:
-  # BASE_URL = 'https://deals.crowdmob.com/crave/verify_install.json'
+  # BASE_URL = 'https://deals.crowdmob.com'
+
+  # When you registered your organization with CrowdMob, you got a secret key
+  # and a permalink:
+  ORGANIZATION_SECRET_KEY = '9cbfbe10e13f2a30cb6509ef0e09445b'
+  ORGANIZATION_PERMALINK = 'crowdmob'
 
   # When you registered your app with CrowdMob, you got a secret key and a
   # permalink:
@@ -103,6 +108,8 @@ end
 # server-to-server installs tracking integration.
 if __FILE__ == $0
   CrowdMob::BASE_URL = 'http://deals.mobstaging.com'
+  CrowdMob::ORGANIZATION_SECRET_KEY = '9cbfbe10e13f2a30cb6509ef0e09445b'
+  CrowdMob::ORGANIZATION_PERMALINK = 'crowdmob'
   CrowdMob::APP_SECRET_KEY = '5bb75e8dd6300cadcdd07fa2c46a3c10'
   CrowdMob::APP_PERMALINK = 'lulzio'
 

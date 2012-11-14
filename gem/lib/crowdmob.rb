@@ -7,7 +7,7 @@
 # integrate using whatever technology you use on your server.
 
 # Run this script with:
-#   ruby server.rb
+#   ruby crowdmob.rb
 
 
 

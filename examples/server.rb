@@ -2,9 +2,9 @@
 
 
 
-# This Ruby script is a working example demonstrating server-to-server installs
-# tracking integration with CrowdMob.  Although this example is in Ruby, you
-# can implement installs tracking using whatever technology you use on your
+# This Ruby script is a working example demonstrating server-to-server
+# integration with CrowdMob.  Although this example is in Ruby, you can
+# implement installs tracking using whatever technology you use on your
 # server.
 
 # Run this script with:
@@ -64,12 +64,12 @@ module CrowdMob
       # solution.
       hashed_mac_address = Digest::SHA2.hexdigest(@@salt + mac_address)
 
-      # Compute the secret hash.  The security hash is a required POST
-      # parameter which prevents forged POST requests.  This secret hash
-      # consists of your app's permalink, a comma, the string "campaign_uuid",
-      # a comma, and the previously hashed MAC address - salted with your
-      # app's secret key, all SHA256 hashed.  (Note that there's no comma
-      # between the secret key salt and the permalink.)
+      # Compute the secret hash.  The secret hash is a required POST parameter
+      # which prevents forged POST requests.  This secret hash consists of
+      # your app's permalink, a comma, the string "campaign_uuid", a comma,
+      # and the previously hashed MAC address - salted with your app's secret
+      # key, all SHA256 hashed.  (Note that there's no comma between the
+      # secret key salt and the permalink.)
       secret_hash = Digest::SHA2.hexdigest(APP_SECRET_KEY + APP_PERMALINK + ',' + 'campaign_uuid' + ',' + hashed_mac_address)
 
       # The POST parameters:

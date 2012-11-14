@@ -25,8 +25,16 @@ require 'crowdmob'
 # You can run this script from the command line to see a working example of
 # server-to-server integration.
 if __FILE__ == $0
-  # Installs tracking:
+
+  # This is how you report app installs to CrowdMob.  First, specify the
+  # CrowdMob server's base URL.  For development and testing, use CrowdMob's
+  # staging server at:
   CrowdMob.base_url = 'http://deals.mobstaging.com'
+
+  # Eventually, before you go live, you'll want to switch to CrowdMob's
+  # production server at:
+  # CrowdMob.base_url = 'http://deals.crowdmob.com'
+
   CrowdMob::Installs.app_secret_key = '5bb75e8dd6300cadcdd07fa2c46a3c10'
   CrowdMob::Installs.app_permalink = 'lulzio'
 
@@ -38,8 +46,17 @@ if __FILE__ == $0
 
 
 
-  # Install campaign CRUD operations:
+
+
+  # This is how you manage app install campaigns through CrowdMob.  First,
+  # specify the CrowdMob server's base URL.  For development and testing, use
+  # CrowdMob's staging server at:
   CrowdMob.base_url = 'http://deals.mobstaging.com'
+
+  # Eventually, before you go live, you'll want to switch to CrowdMob's
+  # production server at:
+  # CrowdMob.base_url = 'http://deals.crowdmob.com'
+
   CrowdMob::Campaigns.organization_secret_key = '9cbfbe10e13f2a30cb6509ef0e09445b'
   CrowdMob::Campaigns.organization_permalink = 'crowdmob'
 
@@ -61,4 +78,5 @@ if __FILE__ == $0
 
   # Delete the campaign:
   CrowdMob::Campaigns.delete(campaign['id'])
+
 end

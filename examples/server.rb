@@ -27,29 +27,24 @@ module CrowdMob
   # located at:
   # BASE_URL = 'https://deals.crowdmob.com'
 
-  # When you registered your organization with CrowdMob, you got a secret key
-  # and a permalink:
-  ORGANIZATION_SECRET_KEY = '9cbfbe10e13f2a30cb6509ef0e09445b'
-  ORGANIZATION_PERMALINK = 'crowdmob'
-
-  # When you registered your app with CrowdMob, you got a secret key and a
-  # permalink:
-  APP_SECRET_KEY = '5bb75e8dd6300cadcdd07fa2c46a3c10'
-  APP_PERMALINK = 'lulzio'
-
-  # If you didn't record your app's secret key and permalink when you
-  # registered your app with CrowdMob, you can find it on your app's page on
-  # CrowdMob's server.  In this example, our app is located here on CrowdMob's
-  # staging server:
-  #   http://deals.mobstaging.com/organizations/crowdmob/apps/lulzio
-  #
-  # In your case, if you registered your app on CrowdMob's production server,
-  # your app's homepage URL would correspond to:
-  #   https://deals.crowdmob.com/organizations/[your organization permalink]/apps/[your app permalink]
-
 
 
   module Installs
+    # When you registered your app with CrowdMob, you got an app secret key
+    # and a permalink:
+    APP_SECRET_KEY = '5bb75e8dd6300cadcdd07fa2c46a3c10'
+    APP_PERMALINK = 'lulzio'
+
+    # If you didn't record your app's secret key and permalink when you
+    # registered your app with CrowdMob, you can find it on your app's page on
+    # CrowdMob's server.  In this example, our app is located here on
+    # CrowdMob's staging server:
+    #   http://deals.mobstaging.com/organizations/crowdmob/apps/lulzio
+    #
+    # In your case, if you registered your app on CrowdMob's production
+    # server, your app's homepage URL would correspond to:
+    #   https://deals.crowdmob.com/organizations/[your organization permalink]/apps/[your app permalink]
+
     # When you signed up for server-to-server installs tracking with CrowdMob,
     # CrowdMob worked with you to determine a secure hashing algorithm, a
     # salt, and a unique device identifier to meet your requirements.  In this
@@ -109,59 +104,66 @@ module CrowdMob
 
 
 
-  def self.create_campaign(bid_in_cents, max_total_spend_in_cents, max_spend_per_day_in_cents, starts_at, ends_at, active)
-    post_url = BASE_URL + '/organizations/' + ORGANIZATION_PERMALINK + '/sponsored_action_campaigns.json'
-    post_uri = URI.parse(post_url)
-    now, secret_hash = self.secret_hash_for_campaign
-    post_params = {
-      'datetime' => now,
-      'secret_hash' => secret_hash,
-      'sponsored_action_campaign[bid_in_cents]' => bid_in_cents,
-      'sponsored_action_campaign[max_total_spend_in_cents]' => max_total_spend_in_cents,
-      'sponsored_action_campaign[max_spend_per_day_in_cents]' => max_spend_per_day_in_cents,
-      'sponsored_action_campaign[starts_at]' => starts_at,
-      'sponsored_action_campaign[ends_at]' => ends_at,
-      'sponsored_action_campaign[kind]' => 'install',
-      'active' => active,
-    }
-    response, data = Net::HTTP.post_form(post_uri, post_params)
-    json = JSON.parse(response.body)
-    json
-  end
+  module Campaigns
+    # When you registered your organization with CrowdMob, you got an
+    # organization secret key and permalink:
+    ORGANIZATION_SECRET_KEY = '9cbfbe10e13f2a30cb6509ef0e09445b'
+    ORGANIZATION_PERMALINK = 'crowdmob'
 
-  def self.edit_campaign(campaign_id, active, params)
-    put_url = BASE_URL + '/organizations/' + ORGANIZATION_PERMALINK + '/sponsored_action_campaigns/' + campaign_id.to_s + '.json'
-    now, secret_hash = self.secret_hash_for_campaign
-    put_url += '?datetime=' + now + '&secret_hash=' + secret_hash + '&active=' + active.to_s
-    params.each { |key, value| put_uri += '&sponsored_action_campaign[' + key + ']=' + value }
-    put_uri = URI.parse(put_url)
-    response = self.issue_http_request(put_uri, 'Put')
-    json = JSON.parse(response.body)
-    json
-  end
+    def self.create(bid_in_cents, max_total_spend_in_cents, max_spend_per_day_in_cents, starts_at, ends_at, active)
+      post_url = BASE_URL + '/organizations/' + ORGANIZATION_PERMALINK + '/sponsored_action_campaigns.json'
+      post_uri = URI.parse(post_url)
+      now, secret_hash = self.compute_secret_hash
+      post_params = {
+        'datetime' => now,
+        'secret_hash' => secret_hash,
+        'sponsored_action_campaign[bid_in_cents]' => bid_in_cents,
+        'sponsored_action_campaign[max_total_spend_in_cents]' => max_total_spend_in_cents,
+        'sponsored_action_campaign[max_spend_per_day_in_cents]' => max_spend_per_day_in_cents,
+        'sponsored_action_campaign[starts_at]' => starts_at,
+        'sponsored_action_campaign[ends_at]' => ends_at,
+        'sponsored_action_campaign[kind]' => 'install',
+        'active' => active,
+      }
+      response, data = Net::HTTP.post_form(post_uri, post_params)
+      json = JSON.parse(response.body)
+      json
+    end
 
-  def self.delete_campaign(campaign_id)
-    delete_url = BASE_URL + '/organizations/' + ORGANIZATION_PERMALINK + '/sponsored_action_campaigns/' + campaign_id.to_s + '.json'
-    now, secret_hash = self.secret_hash_for_campaign
-    delete_url += '?datetime=' + now + '&secret_hash=' + secret_hash
-    delete_uri = URI.parse(delete_url)
-    response = self.issue_http_request(delete_uri, 'Delete')
-  end
+    def self.edit(campaign_id, active, params)
+      put_url = BASE_URL + '/organizations/' + ORGANIZATION_PERMALINK + '/sponsored_action_campaigns/' + campaign_id.to_s + '.json'
+      now, secret_hash = self.compute_secret_hash
+      put_url += '?datetime=' + now + '&secret_hash=' + secret_hash + '&active=' + active.to_s
+      params.each { |key, value| put_uri += '&sponsored_action_campaign[' + key + ']=' + value }
+      put_uri = URI.parse(put_url)
+      response = self.issue_http_request(put_uri, 'Put')
+      json = JSON.parse(response.body)
+      json
+    end
 
-  def self.secret_hash_for_campaign
-    now = DateTime.now.iso8601
-    secret_hash = ORGANIZATION_SECRET_KEY + ORGANIZATION_PERMALINK + ',' + now
-    secret_hash = Digest::SHA2.hexdigest(secret_hash)
-    [now, secret_hash]
-  end
+    def self.delete(campaign_id)
+      delete_url = BASE_URL + '/organizations/' + ORGANIZATION_PERMALINK + '/sponsored_action_campaigns/' + campaign_id.to_s + '.json'
+      now, secret_hash = self.compute_secret_hash
+      delete_url += '?datetime=' + now + '&secret_hash=' + secret_hash
+      delete_uri = URI.parse(delete_url)
+      response = self.issue_http_request(delete_uri, 'Delete')
+    end
 
-  def self.issue_http_request(uri, http_method)
-    http = Net::HTTP.new(uri.host, uri.port)
-    http.use_ssl = uri.scheme == 'https'
-    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-    request = Net::HTTP.const_get(http_method).new(uri.request_uri)
-    response = http.request(request)
-    response
+    def self.compute_secret_hash
+      now = DateTime.now.iso8601
+      secret_hash = ORGANIZATION_SECRET_KEY + ORGANIZATION_PERMALINK + ',' + now
+      secret_hash = Digest::SHA2.hexdigest(secret_hash)
+      [now, secret_hash]
+    end
+
+    def self.issue_http_request(uri, http_method)
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = uri.scheme == 'https'
+      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      request = Net::HTTP.const_get(http_method).new(uri.request_uri)
+      response = http.request(request)
+      response
+    end
   end
 end
 
@@ -171,10 +173,8 @@ end
 # server-to-server installs tracking integration.
 if __FILE__ == $0
   CrowdMob::BASE_URL = 'http://deals.mobstaging.com'
-  CrowdMob::ORGANIZATION_SECRET_KEY = '9cbfbe10e13f2a30cb6509ef0e09445b'
-  CrowdMob::ORGANIZATION_PERMALINK = 'crowdmob'
-  CrowdMob::APP_SECRET_KEY = '5bb75e8dd6300cadcdd07fa2c46a3c10'
-  CrowdMob::APP_PERMALINK = 'lulzio'
+  CrowdMob::Installs::APP_SECRET_KEY = '5bb75e8dd6300cadcdd07fa2c46a3c10'
+  CrowdMob::Installs::APP_PERMALINK = 'lulzio'
 
   # This is an example MAC address, stored in your server's database, used to
   # uniquely identify a device:
@@ -183,10 +183,13 @@ if __FILE__ == $0
   CrowdMob::Installs.report(mac_address)
 
 
+  CrowdMob::BASE_URL = 'http://deals.mobstaging.com'
+  CrowdMob::Campaigns::ORGANIZATION_SECRET_KEY = '9cbfbe10e13f2a30cb6509ef0e09445b'
+  CrowdMob::Campaigns::ORGANIZATION_PERMALINK = 'crowdmob'
 
-  # now = DateTime.now
-  # one_week_from_now = now + 7
-  # campaign = CrowdMob.create_campaign(1, 100, 10, now, one_week_from_now, true)
-  # campaign = CrowdMob.edit_campaign(campaign['id'], false, {})
-  # CrowdMob.delete_campaign(campaign['id'])
+  now = DateTime.now
+  one_week_from_now = now + 7
+  campaign = CrowdMob::Campaigns.create(1, 100, 10, now, one_week_from_now, true)
+  campaign = CrowdMob::Campaigns.edit(campaign['id'], false, {})
+  CrowdMob::Campaigns.delete(campaign['id'])
 end

@@ -103,7 +103,7 @@ class CrowdMob
   end
 
 
-  def self.create_campaign
+  def self.create_campaign(bid_in_cents, max_total_spend_in_cents, max_spend_per_day_in_cents, starts_at, ends_at, active)
     post_url = BASE_URL + '/organizations/' + ORGANIZATION_PERMALINK + '/sponsored_action_campaigns.json'
     post_uri = URI.parse(post_url)
     now = DateTime.now.iso8601
@@ -112,13 +112,13 @@ class CrowdMob
     post_params = {
       'datetime' => now,
       'secret_hash' => secret_hash,
-      'sponsored_action_campaign[bid_in_cents]' => 1,
-      'sponsored_action_campaign[max_total_spend_in_cents]' => 100,
-      'sponsored_action_campaign[max_spend_per_day_in_cents]' => 10,
-      'sponsored_action_campaign[starts_at]' => now,
-      'sponsored_action_campaign[ends_at]' => now,
+      'sponsored_action_campaign[bid_in_cents]' => bid_in_cents,
+      'sponsored_action_campaign[max_total_spend_in_cents]' => max_total_spend_in_cents,
+      'sponsored_action_campaign[max_spend_per_day_in_cents]' => max_spend_per_day_in_cents,
+      'sponsored_action_campaign[starts_at]' => starts_at,
+      'sponsored_action_campaign[ends_at]' => ends_at,
       'sponsored_action_campaign[kind]' => 'install',
-      'active' => true,
+      'active' => active,
     }
     response, data = Net::HTTP.post_form(post_uri, post_params)
     json = JSON.parse(response.body)
@@ -159,6 +159,8 @@ if __FILE__ == $0
   # TODO: Uncomment this line later...  Just commenting it out for now to test creating campaigns.
   # CrowdMob.report_install(mac_address)
 
-  campaign = CrowdMob.create_campaign
+  now = DateTime.now
+  one_week_from_now = now + 7
+  campaign = CrowdMob.create_campaign(1, 100, 10, now, one_week_from_now, true)
   CrowdMob.delete_campaign(campaign['id'])
 end

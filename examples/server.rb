@@ -15,6 +15,7 @@
 require 'digest'
 require 'json'
 require 'net/http'
+require 'time'
 
 
 
@@ -105,6 +106,22 @@ class CrowdMob
   def self.create_campaign
     post_url = BASE_URL + '/organizations/' + ORGANIZATION_PERMALINK + '/sponsored_action_campaigns.json'
     post_uri = URI.parse(post_url)
+    now = DateTime.now.iso8601
+    post_params = {
+      'datetime' => now,
+      'sponsored_action_campaign' => {
+        'bid_in_cents' => 1,
+        'max_total_spend_in_cents' => 100,
+        'max_spend_per_day_in_cents' => 10,
+        'starts_at' => now,
+        'ends_at' => now,
+        'approved_at' => nil,
+        'kind' => 'install',
+      },
+    }
+    response, data = Net::HTTP.post_form(post_uri, post_params)
+    json = JSON.parse(response.body)
+    puts response.body
   end
 end
 
@@ -123,6 +140,8 @@ if __FILE__ == $0
   # uniquely identify a device:
   mac_address = '11:11:11:11:11:11'
 
-  CrowdMob.report_install(mac_address)
+  # TODO: Uncomment this line later...  Just commenting it out for now to test creating campaigns.
+  # CrowdMob.report_install(mac_address)
+
   CrowdMob.create_campaign
 end

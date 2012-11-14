@@ -111,15 +111,13 @@ class CrowdMob
     post_params = {
       'datetime' => now,
       'secret_hash' => secret_hash,
-      'sponsored_action_campaign' => {
-        'bid_in_cents' => 1,
-        'max_total_spend_in_cents' => 100,
-        'max_spend_per_day_in_cents' => 10,
-        'starts_at' => now,
-        'ends_at' => now,
-        'approved_at' => nil,
-        'kind' => 'install',
-      },
+      'sponsored_action_campaign[bid_in_cents]' => 1,
+      'sponsored_action_campaign[max_total_spend_in_cents]' => 100,
+      'sponsored_action_campaign[max_spend_per_day_in_cents]' => 10,
+      'sponsored_action_campaign[starts_at]' => now,
+      'sponsored_action_campaign[ends_at]' => now,
+      'sponsored_action_campaign[approved_at]' => now,
+      'sponsored_action_campaign[kind]' => 'install',
     }
     response, data = Net::HTTP.post_form(post_uri, post_params)
     json = JSON.parse(response.body)

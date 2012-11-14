@@ -47,59 +47,64 @@ module CrowdMob
   # your app's homepage URL would correspond to:
   #   https://deals.crowdmob.com/organizations/[your organization permalink]/apps/[your app permalink]
 
-  # When you signed up for server-to-server installs tracking with CrowdMob,
-  # CrowdMob worked with you to determine a secure hashing algorithm, a salt,
-  # and a unique device identifier to meet your requirements.  In this example,
-  # we're SHA256 hashing MAC addresses, salted with the string "salt".  We
-  # typically recommend using your app's secret key as your salt, but we can
-  # use any string that meets your requirements as a salt.
-  @@salt = 'salt'
 
-  def self.report_install(mac_address)
-    post_url = BASE_URL + '/crave/verify_install.json'
-    post_uri = URI.parse(post_url)
 
-    # Hash the MAC address.  If you already store the unique device
-    # identifiers hashed, then this step is unnecessary.  If you store the
-    # device IDs hashed, you would've worked with CrowdMob's engineers to
-    # implement a custom server-to-server installs tracking integration
-    # solution.
-    hashed_mac_address = Digest::SHA2.hexdigest(@@salt + mac_address)
+  module Installs
+    # When you signed up for server-to-server installs tracking with CrowdMob,
+    # CrowdMob worked with you to determine a secure hashing algorithm, a
+    # salt, and a unique device identifier to meet your requirements.  In this
+    # example, we're SHA256 hashing MAC addresses, salted with the string
+    # "salt".  We typically recommend using your app's secret key as your
+    # salt, but we can use any string that meets your requirements as a salt.
+    @@salt = 'salt'
 
-    # Compute the secret hash.  The security hash is a required POST parameter
-    # which prevents forged POST requests.  This secret hash consists of your
-    # app's permalink, a comma, the string "campaign_uuid", a comma, and the
-    # previously hashed MAC address - salted with your app's secret key, all
-    # SHA256 hashed.  (Note that there's no comma between the secret key salt
-    # and the permalink.)
-    secret_hash = Digest::SHA2.hexdigest(APP_SECRET_KEY + APP_PERMALINK + ',' + 'campaign_uuid' + ',' + hashed_mac_address)
+    def self.report(mac_address)
+      post_url = BASE_URL + '/crave/verify_install.json'
+      post_uri = URI.parse(post_url)
 
-    # The POST parameters:
-    post_params = {
-      'permalink' => APP_PERMALINK,
-      'uuid' => hashed_mac_address,
-      'uuid_type' => 'campaign_uuid',
-      'secret_hash' => secret_hash
-    }
+      # Hash the MAC address.  If you already store the unique device
+      # identifiers hashed, then this step is unnecessary.  If you store the
+      # device IDs hashed, you would've worked with CrowdMob's engineers to
+      # implement a custom server-to-server installs tracking integration
+      # solution.
+      hashed_mac_address = Digest::SHA2.hexdigest(@@salt + mac_address)
 
-    # Finally, issue the POST request to CrowdMob's server:
-    response, data = Net::HTTP.post_form(post_uri, post_params)
-    json = JSON.parse(response.body)
+      # Compute the secret hash.  The security hash is a required POST
+      # parameter which prevents forged POST requests.  This secret hash
+      # consists of your app's permalink, a comma, the string "campaign_uuid",
+      # a comma, and the previously hashed MAC address - salted with your
+      # app's secret key, all SHA256 hashed.  (Note that there's no comma
+      # between the secret key salt and the permalink.)
+      secret_hash = Digest::SHA2.hexdigest(APP_SECRET_KEY + APP_PERMALINK + ',' + 'campaign_uuid' + ',' + hashed_mac_address)
 
-    # Check for a 200 HTTP status code.  This code denotes successful install
-    # tracking.
-    puts "HTTP status code: #{response.code}"
-    puts "CrowdMob internal (action) status code: #{json['action_status']}"
+      # The POST parameters:
+      post_params = {
+        'permalink' => APP_PERMALINK,
+        'uuid' => hashed_mac_address,
+        'uuid_type' => 'campaign_uuid',
+        'secret_hash' => secret_hash
+      }
 
-    # This table explains what the different status code combinations denote:
-    #   HTTP Status Code    CrowdMob Internal Status Code   Meaning
-    #   ----------------    -----------------------------   -------
-    #   400                 1001                            You didn't supply your app's permalink as an HTTP POST parameter.
-    #   400                 1002                            You didn't specify the unique device identifier type as an HTTP POST parameter.  (In the case of server-to-server installs tracking, this parameter should be the string "campaign_uuid".)
-    #   400                 1003                            You didn't specify the unique device identifier as an HTTP POST parameter.  (Typically a salted hashed MAC address, but could be some other unique device identifier that you collect on your server.)
-    #   404                 1004                            The app permalink that you specified doesn't correspond to any app registered on CrowdMob's server.
-    #   403                 1005                            The secret hash that you computed doesn't correspond to the secret hash that CrowdMob's server computed.  (This could be a forged request?)
-    #   200                 Any                             CrowdMob's server successfully tracked the install.
+      # Finally, issue the POST request to CrowdMob's server:
+      response, data = Net::HTTP.post_form(post_uri, post_params)
+      json = JSON.parse(response.body)
+
+      # Check for a 200 HTTP status code.  This code denotes successful
+      # install tracking.
+      puts "HTTP status code: #{response.code}"
+      puts "CrowdMob internal (action) status code: #{json['action_status']}"
+
+      # This table explains what the different status code combinations
+      # denote:
+      #   HTTP Status Code    CrowdMob Internal Status Code   Meaning
+      #   ----------------    -----------------------------   -------
+      #   400                 1001                            You didn't supply your app's permalink as an HTTP POST parameter.
+      #   400                 1002                            You didn't specify the unique device identifier type as an HTTP POST parameter.  (In the case of server-to-server installs tracking, this parameter should be the string "campaign_uuid".)
+      #   400                 1003                            You didn't specify the unique device identifier as an HTTP POST parameter.  (Typically a salted hashed MAC address, but could be some other unique device identifier that you collect on your server.)
+      #   404                 1004                            The app permalink that you specified doesn't correspond to any app registered on CrowdMob's server.
+      #   403                 1005                            The secret hash that you computed doesn't correspond to the secret hash that CrowdMob's server computed.  (This could be a forged request?)
+      #   200                 Any                             CrowdMob's server successfully tracked the install.
+    end
   end
 
 
@@ -175,13 +180,13 @@ if __FILE__ == $0
   # uniquely identify a device:
   mac_address = '11:11:11:11:11:11'
 
-  CrowdMob.report_install(mac_address)
+  CrowdMob::Installs.report(mac_address)
 
 
 
-  now = DateTime.now
-  one_week_from_now = now + 7
-  campaign = CrowdMob.create_campaign(1, 100, 10, now, one_week_from_now, true)
-  campaign = CrowdMob.edit_campaign(campaign['id'], false, {})
-  CrowdMob.delete_campaign(campaign['id'])
+  # now = DateTime.now
+  # one_week_from_now = now + 7
+  # campaign = CrowdMob.create_campaign(1, 100, 10, now, one_week_from_now, true)
+  # campaign = CrowdMob.edit_campaign(campaign['id'], false, {})
+  # CrowdMob.delete_campaign(campaign['id'])
 end

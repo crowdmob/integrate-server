@@ -6,6 +6,6 @@ Gem::Specification.new do |s|
   s.description = 'Server to server integration with CrowdMob'
   s.authors     = ['CrowdMob, Inc.']
   s.email       = 'developers@crowdmob.com'
-  s.files       = ['lib/crowdmob.rb']
+  s.files       = ['lib/base.rb', 'lib/campaigns.rb', 'lib/crowdmob.rb', 'lib/installs.rb']
   s.homepage    = 'http://rubygems.org/gems/bing_images'
 end

@@ -4,8 +4,7 @@
 
 # This Ruby script is a working example demonstrating server-to-server
 # integration with CrowdMob.  Although this example is in Ruby, you can
-# implement installs tracking using whatever technology you use on your
-# server.
+# integrate using whatever technology you use on your server.
 
 # Run this script with:
 #   ruby server.rb

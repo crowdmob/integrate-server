@@ -35,13 +35,26 @@ if __FILE__ == $0
   # production server at:
   # CrowdMob.base_url = 'http://deals.crowdmob.com'
 
+  # When you registered your app with CrowdMob, you got an app secret key and
+  # a permalink:
   CrowdMob::Installs.app_secret_key = '5bb75e8dd6300cadcdd07fa2c46a3c10'
   CrowdMob::Installs.app_permalink = 'lulzio'
+
+  # If you didn't record your app's secret key and permalink when you
+  # registered your app with CrowdMob, you can find it on your app's page on
+  # CrowdMob's server.  In this example, our app is located here on CrowdMob's
+  # staging server:
+  #   http://deals.mobstaging.com/organizations/crowdmob/apps/lulzio
+  #
+  # In your case, if you registered your app on CrowdMob's production server,
+  # your app's homepage URL would correspond to:
+  #   https://deals.crowdmob.com/organizations/[your organization permalink]/apps/[your app permalink]
 
   # This is an example MAC address, stored in your server's database, used to
   # uniquely identify a device:
   mac_address = '11:11:11:11:11:11'
 
+  # Finally, report the app install to CrowdMob:
   CrowdMob::Installs.report(mac_address)
 
 

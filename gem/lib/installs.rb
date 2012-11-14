@@ -19,7 +19,7 @@ module CrowdMob::Installs
   @app_secret_key = '5bb75e8dd6300cadcdd07fa2c46a3c10'
   @app_permalink = 'lulzio'
 
-  # If you didn't record your app's secret key and permalink when you regist
+  # If you didn't record your app's secret key and permalink when you
   # registered your app with CrowdMob, you can find it on your app's page on
   # CrowdMob's server.  In this example, our app is located here on CrowdMob's
   # staging server:

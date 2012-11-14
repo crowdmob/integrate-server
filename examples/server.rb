@@ -100,6 +100,12 @@ class CrowdMob
     #   403                 1005                            The secret hash that you computed doesn't correspond to the secret hash that CrowdMob's server computed.  (This could be a forged request?)
     #   200                 Any                             CrowdMob's server successfully tracked the install.
   end
+
+
+  def self.create_campaign
+    post_url = BASE_URL + '/organizations/' + ORGANIZATION_PERMALINK + '/sponsored_action_campaigns.json'
+    post_uri = URI.parse(post_url)
+  end
 end
 
 
@@ -118,4 +124,5 @@ if __FILE__ == $0
   mac_address = '11:11:11:11:11:11'
 
   CrowdMob.report_install(mac_address)
+  CrowdMob.create_campaign
 end

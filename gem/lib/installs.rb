@@ -15,7 +15,7 @@ module CrowdMob::Installs
   end
 
   # When you registered your app with CrowdMob, you got an app secret key and
-  # a permalink:
+  # permalink:
   @app_secret_key = '5bb75e8dd6300cadcdd07fa2c46a3c10'
   @app_permalink = 'lulzio'
 

@@ -36,7 +36,7 @@ if __FILE__ == $0
   # CrowdMob.base_url = 'http://deals.crowdmob.com'
 
   # When you registered your app with CrowdMob, you got an app secret key and
-  # a permalink:
+  # permalink:
   CrowdMob::Installs.app_secret_key = '5bb75e8dd6300cadcdd07fa2c46a3c10'
   CrowdMob::Installs.app_permalink = 'lulzio'
 
@@ -70,24 +70,32 @@ if __FILE__ == $0
   # production server at:
   # CrowdMob.base_url = 'http://deals.crowdmob.com'
 
+  # When you registered your organization with CrowdMob, you got an
+  # organization secret key and permalink:
   CrowdMob::Campaigns.organization_secret_key = '9cbfbe10e13f2a30cb6509ef0e09445b'
   CrowdMob::Campaigns.organization_permalink = 'crowdmob'
 
-  # Create a campaign:
+  # Create an app campaign:
   now = DateTime.now
   one_week_from_now = now + 7
   params = {
-    bid_in_cents: 1,
-    max_total_spend_in_cents: 100,
-    max_spend_per_day_in_cents: 10,
-    starts_at: now,
-    ends_at: one_week_from_now,
+    bid_in_cents: 1,                # The bounty in cents that you'll pay CrowdMob for each app install.
+    max_total_spend_in_cents: 100,  # The maximum you're willing to spend on app installs, total, for this campaign.
+    max_spend_per_day_in_cents: 10, # The maximum you're willing to spend on app installs per day for this campaign.
+    starts_at: now,                 # When this campaign begins.
+    ends_at: one_week_from_now,     # When this campaign ends.
   }
-  campaign = CrowdMob::Campaigns.create(true, params)
+  live = true                       # Whether or not you're ready to take this campaign live right now.
+  campaign = CrowdMob::Campaigns.create(live, params)
 
   # Edit the campaign:
-  params = { bid_in_cents: 2 }
-  campaign = CrowdMob::Campaigns.edit(campaign['id'], false, params)
+  params = {
+    # The parameters are the same as the parameters above, used to create the
+    # campaign.  You need only specify the parameters that you wish to change.
+    bid_in_cents: 2,
+  }
+  live = false
+  campaign = CrowdMob::Campaigns.edit(campaign['id'], live, params)
 
   # Delete the campaign:
   CrowdMob::Campaigns.delete(campaign['id'])

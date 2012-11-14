@@ -70,8 +70,8 @@ module CrowdMob::Installs
 
     # Check for a 200 HTTP status code.  This code denotes successful install
     # tracking.
-    puts "HTTP status code: #{response.code}"
-    puts "CrowdMob internal (action) status code: #{json['action_status']}"
+    # puts "HTTP status code: #{response.code}"
+    # puts "CrowdMob internal (action) status code: #{json['action_status']}"
 
     # This table explains what the different status code combinations
     # denote:

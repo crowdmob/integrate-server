@@ -54,8 +54,8 @@ module CrowdMob
     @@salt = 'salt'
 
     def self.report(mac_address)
-      post_url = BASE_URL + '/crave/verify_install.json'
-      post_uri = URI.parse(post_url)
+      url = BASE_URL + '/crave/verify_install.json'
+      uri = URI.parse(url)
 
       # Hash the MAC address.  If you already store the unique device
       # identifiers hashed, then this step is unnecessary.  If you store the
@@ -73,7 +73,7 @@ module CrowdMob
       secret_hash = Digest::SHA2.hexdigest(APP_SECRET_KEY + APP_PERMALINK + ',' + 'campaign_uuid' + ',' + hashed_mac_address)
 
       # The POST parameters:
-      post_params = {
+      params = {
         'permalink' => APP_PERMALINK,
         'uuid' => hashed_mac_address,
         'uuid_type' => 'campaign_uuid',
@@ -81,7 +81,7 @@ module CrowdMob
       }
 
       # Finally, issue the POST request to CrowdMob's server:
-      response, data = Net::HTTP.post_form(post_uri, post_params)
+      response, data = Net::HTTP.post_form(uri, params)
       json = JSON.parse(response.body)
 
       # Check for a 200 HTTP status code.  This code denotes successful
@@ -110,43 +110,43 @@ module CrowdMob
     ORGANIZATION_SECRET_KEY = '9cbfbe10e13f2a30cb6509ef0e09445b'
     ORGANIZATION_PERMALINK = 'crowdmob'
 
-    def self.create(bid_in_cents, max_total_spend_in_cents, max_spend_per_day_in_cents, starts_at, ends_at, active)
-      post_url = BASE_URL + '/organizations/' + ORGANIZATION_PERMALINK + '/sponsored_action_campaigns.json'
-      post_uri = URI.parse(post_url)
+    def self.create(active, params)
+      url = BASE_URL + '/organizations/' + ORGANIZATION_PERMALINK + '/sponsored_action_campaigns.json'
+      uri = URI.parse(url)
       now, secret_hash = self.compute_secret_hash
-      post_params = {
+      params = {
         'datetime' => now,
         'secret_hash' => secret_hash,
-        'sponsored_action_campaign[bid_in_cents]' => bid_in_cents,
-        'sponsored_action_campaign[max_total_spend_in_cents]' => max_total_spend_in_cents,
-        'sponsored_action_campaign[max_spend_per_day_in_cents]' => max_spend_per_day_in_cents,
-        'sponsored_action_campaign[starts_at]' => starts_at,
-        'sponsored_action_campaign[ends_at]' => ends_at,
+        'active' => params[:active],
+        'sponsored_action_campaign[bid_in_cents]' => params[:bid_in_cents],
+        'sponsored_action_campaign[max_total_spend_in_cents]' => params[:max_total_spend_in_cents],
+        'sponsored_action_campaign[max_spend_per_day_in_cents]' => params[:max_spend_per_day_in_cents],
+        'sponsored_action_campaign[starts_at]' => params[:starts_at],
+        'sponsored_action_campaign[ends_at]' => params[:ends_at],
         'sponsored_action_campaign[kind]' => 'install',
-        'active' => active,
       }
-      response, data = Net::HTTP.post_form(post_uri, post_params)
+      response, data = Net::HTTP.post_form(uri, params)
       json = JSON.parse(response.body)
       json
     end
 
     def self.edit(campaign_id, active, params)
-      put_url = BASE_URL + '/organizations/' + ORGANIZATION_PERMALINK + '/sponsored_action_campaigns/' + campaign_id.to_s + '.json'
+      url = BASE_URL + '/organizations/' + ORGANIZATION_PERMALINK + '/sponsored_action_campaigns/' + campaign_id.to_s + '.json'
       now, secret_hash = self.compute_secret_hash
-      put_url += '?datetime=' + now + '&secret_hash=' + secret_hash + '&active=' + active.to_s
-      params.each { |key, value| put_uri += '&sponsored_action_campaign[' + key + ']=' + value }
-      put_uri = URI.parse(put_url)
-      response = self.issue_http_request(put_uri, 'Put')
+      url += '?datetime=' + now + '&secret_hash=' + secret_hash + '&active=' + active.to_s
+      params.each { |key, value| url += '&sponsored_action_campaign[' + key.to_s + ']=' + value.to_s }
+      uri = URI.parse(url)
+      response = self.issue_http_request(uri, 'Put')
       json = JSON.parse(response.body)
       json
     end
 
     def self.delete(campaign_id)
-      delete_url = BASE_URL + '/organizations/' + ORGANIZATION_PERMALINK + '/sponsored_action_campaigns/' + campaign_id.to_s + '.json'
+      url = BASE_URL + '/organizations/' + ORGANIZATION_PERMALINK + '/sponsored_action_campaigns/' + campaign_id.to_s + '.json'
       now, secret_hash = self.compute_secret_hash
-      delete_url += '?datetime=' + now + '&secret_hash=' + secret_hash
-      delete_uri = URI.parse(delete_url)
-      response = self.issue_http_request(delete_uri, 'Delete')
+      url += '?datetime=' + now + '&secret_hash=' + secret_hash
+      uri = URI.parse(url)
+      response = self.issue_http_request(uri, 'Delete')
     end
 
     def self.compute_secret_hash
@@ -170,8 +170,9 @@ end
 
 
 # You can run this script from the command line to see a working example of
-# server-to-server installs tracking integration.
+# server-to-server integration.
 if __FILE__ == $0
+  # Installs tracking:
   CrowdMob::BASE_URL = 'http://deals.mobstaging.com'
   CrowdMob::Installs::APP_SECRET_KEY = '5bb75e8dd6300cadcdd07fa2c46a3c10'
   CrowdMob::Installs::APP_PERMALINK = 'lulzio'
@@ -183,13 +184,28 @@ if __FILE__ == $0
   CrowdMob::Installs.report(mac_address)
 
 
+
+  # Install campaign CRUD operations:
   CrowdMob::BASE_URL = 'http://deals.mobstaging.com'
   CrowdMob::Campaigns::ORGANIZATION_SECRET_KEY = '9cbfbe10e13f2a30cb6509ef0e09445b'
   CrowdMob::Campaigns::ORGANIZATION_PERMALINK = 'crowdmob'
 
+  # Create a campaign:
   now = DateTime.now
   one_week_from_now = now + 7
-  campaign = CrowdMob::Campaigns.create(1, 100, 10, now, one_week_from_now, true)
-  campaign = CrowdMob::Campaigns.edit(campaign['id'], false, {})
+  params = {
+    bid_in_cents: 1,
+    max_total_spend_in_cents: 100,
+    max_spend_per_day_in_cents: 10,
+    starts_at: now,
+    ends_at: one_week_from_now,
+  }
+  campaign = CrowdMob::Campaigns.create(true, params)
+
+  # Edit the campaign:
+  params = { bid_in_cents: 2 }
+  campaign = CrowdMob::Campaigns.edit(campaign['id'], false, params)
+
+  # Delete the campaign:
   CrowdMob::Campaigns.delete(campaign['id'])
 end

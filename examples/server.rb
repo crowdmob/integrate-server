@@ -107,8 +107,10 @@ class CrowdMob
     post_url = BASE_URL + '/organizations/' + ORGANIZATION_PERMALINK + '/sponsored_action_campaigns.json'
     post_uri = URI.parse(post_url)
     now = DateTime.now.iso8601
+    secret_hash = ORGANIZATION_SECRET_KEY + ORGANIZATION_PERMALINK + ',' + now
     post_params = {
       'datetime' => now,
+      'secret_hash' => secret_hash,
       'sponsored_action_campaign' => {
         'bid_in_cents' => 1,
         'max_total_spend_in_cents' => 100,

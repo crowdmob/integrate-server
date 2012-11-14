@@ -103,12 +103,12 @@ class CrowdMob
   end
 
 
+
   def self.create_campaign(bid_in_cents, max_total_spend_in_cents, max_spend_per_day_in_cents, starts_at, ends_at, active)
     post_url = BASE_URL + '/organizations/' + ORGANIZATION_PERMALINK + '/sponsored_action_campaigns.json'
     post_uri = URI.parse(post_url)
     now = DateTime.now.iso8601
-    secret_hash = ORGANIZATION_SECRET_KEY + ORGANIZATION_PERMALINK + ',' + now
-    secret_hash = Digest::SHA2.hexdigest(secret_hash)
+    secret_hash = self.secret_hash_for_campaign(now)
     post_params = {
       'datetime' => now,
       'secret_hash' => secret_hash,
@@ -128,8 +128,7 @@ class CrowdMob
   def self.delete_campaign(campaign_id)
     delete_url = BASE_URL + '/organizations/' + ORGANIZATION_PERMALINK + '/sponsored_action_campaigns/' + campaign_id.to_s + '.json'
     now = DateTime.now.iso8601
-    secret_hash = ORGANIZATION_SECRET_KEY + ORGANIZATION_PERMALINK + ',' + now
-    secret_hash = Digest::SHA2.hexdigest(secret_hash)
+    secret_hash = self.secret_hash_for_campaign(now)
     delete_url += '?datetime=' + now + '&secret_hash=' + secret_hash
     delete_uri = URI.parse(delete_url)
 
@@ -138,6 +137,12 @@ class CrowdMob
     http.verify_mode = OpenSSL::SSL::VERIFY_NONE
     request = Net::HTTP::Delete.new(delete_uri.request_uri)
     response = http.request(request)
+  end
+
+  def self.secret_hash_for_campaign(now)
+    secret_hash = ORGANIZATION_SECRET_KEY + ORGANIZATION_PERMALINK + ',' + now
+    secret_hash = Digest::SHA2.hexdigest(secret_hash)
+    secret_hash
   end
 end
 

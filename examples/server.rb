@@ -9,6 +9,10 @@
 # First, install the prerequisite "crowdmob" Ruby gem with:
 #   $ gem install crowdmob
 
+# If you use Bundler to manage your application's dependencies, add the
+# "crowdmob" gem to your Gemfile with:
+#   gem 'crowdmob'
+
 # Then run this script with:
 #   $ ruby server.rb
 

@@ -19,7 +19,7 @@ require 'time'
 
 
 
-class CrowdMob
+module CrowdMob
   # You can test against CrowdMob's staging server located at:
   BASE_URL = 'http://deals.mobstaging.com'
 

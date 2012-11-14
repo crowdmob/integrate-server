@@ -107,8 +107,7 @@ class CrowdMob
   def self.create_campaign(bid_in_cents, max_total_spend_in_cents, max_spend_per_day_in_cents, starts_at, ends_at, active)
     post_url = BASE_URL + '/organizations/' + ORGANIZATION_PERMALINK + '/sponsored_action_campaigns.json'
     post_uri = URI.parse(post_url)
-    now = DateTime.now.iso8601
-    secret_hash = self.secret_hash_for_campaign(now)
+    now, secret_hash = self.secret_hash_for_campaign
     post_params = {
       'datetime' => now,
       'secret_hash' => secret_hash,
@@ -125,24 +124,39 @@ class CrowdMob
     json
   end
 
-  def self.delete_campaign(campaign_id)
-    delete_url = BASE_URL + '/organizations/' + ORGANIZATION_PERMALINK + '/sponsored_action_campaigns/' + campaign_id.to_s + '.json'
-    now = DateTime.now.iso8601
-    secret_hash = self.secret_hash_for_campaign(now)
-    delete_url += '?datetime=' + now + '&secret_hash=' + secret_hash
-    delete_uri = URI.parse(delete_url)
-
-    http = Net::HTTP.new(delete_uri.host, delete_uri.port)
-    http.use_ssl = delete_uri.scheme == 'https'
-    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-    request = Net::HTTP::Delete.new(delete_uri.request_uri)
-    response = http.request(request)
+  def self.edit_campaign(campaign_id, active, params)
+    put_url = BASE_URL + '/organizations/' + ORGANIZATION_PERMALINK + '/sponsored_action_campaigns/' + campaign_id.to_s + '.json'
+    now, secret_hash = self.secret_hash_for_campaign
+    put_url += '?datetime=' + now + '&secret_hash=' + secret_hash + '&active=' + active.to_s
+    params.each { |key, value| put_uri += '&sponsored_action_campaign[' + key + ']=' + value }
+    put_uri = URI.parse(put_url)
+    response = self.issue_http_request(put_uri, 'Put')
+    json = JSON.parse(response.body)
+    json
   end
 
-  def self.secret_hash_for_campaign(now)
+  def self.delete_campaign(campaign_id)
+    delete_url = BASE_URL + '/organizations/' + ORGANIZATION_PERMALINK + '/sponsored_action_campaigns/' + campaign_id.to_s + '.json'
+    now, secret_hash = self.secret_hash_for_campaign
+    delete_url += '?datetime=' + now + '&secret_hash=' + secret_hash
+    delete_uri = URI.parse(delete_url)
+    response = self.issue_http_request(delete_uri, 'Delete')
+  end
+
+  def self.secret_hash_for_campaign
+    now = DateTime.now.iso8601
     secret_hash = ORGANIZATION_SECRET_KEY + ORGANIZATION_PERMALINK + ',' + now
     secret_hash = Digest::SHA2.hexdigest(secret_hash)
-    secret_hash
+    [now, secret_hash]
+  end
+
+  def self.issue_http_request(uri, http_method)
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = uri.scheme == 'https'
+    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+    request = Net::HTTP.const_get(http_method).new(uri.request_uri)
+    response = http.request(request)
+    response
   end
 end
 
@@ -161,11 +175,13 @@ if __FILE__ == $0
   # uniquely identify a device:
   mac_address = '11:11:11:11:11:11'
 
-  # TODO: Uncomment this line later...  Just commenting it out for now to test creating campaigns.
-  # CrowdMob.report_install(mac_address)
+  CrowdMob.report_install(mac_address)
+
+
 
   now = DateTime.now
   one_week_from_now = now + 7
   campaign = CrowdMob.create_campaign(1, 100, 10, now, one_week_from_now, true)
+  campaign = CrowdMob.edit_campaign(campaign['id'], false, {})
   CrowdMob.delete_campaign(campaign['id'])
 end

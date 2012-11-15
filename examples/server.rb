@@ -77,7 +77,7 @@ if __FILE__ == $0
   now = DateTime.now
   one_week_from_now = now + 7
   params = {
-    bid_in_cents: 1,                # The bounty in cents that you'll pay CrowdMob for each app install.
+    bid_in_cents: 300,              # The bounty in cents that you'll pay CrowdMob for each app install.
     max_total_spend_in_cents: 100,  # The maximum you're willing to spend on app installs, total, for this campaign.
     max_spend_per_day_in_cents: 10, # The maximum you're willing to spend on app installs per day for this campaign.
     starts_at: now,                 # When this campaign begins.
@@ -90,7 +90,7 @@ if __FILE__ == $0
   params = {
     # The parameters are the same as the parameters above, used to create the
     # campaign.  You need only specify the parameters that you wish to change.
-    bid_in_cents: 2,
+    bid_in_cents: 200,
   }
   live = false
   campaign = CrowdMob::Campaigns.edit(campaign['id'], live, params)

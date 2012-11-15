@@ -1,12 +1,11 @@
 module CrowdMob
   class << self
-    attr_accessor :base_url
+    attr_accessor :env
   end
 
-  # You can test against CrowdMob's staging server located at:
-  @base_url = 'http://deals.mobstaging.com'
+  @env = :development
 
-  # Eventually, you'll want to switch over to CrowdMob's production server
-  # located at:
-  # @base_url = 'https://deals.crowdmob.com'
+  def self.base_url
+    @env == :production ? 'http://deals.crowdmob.com' : 'http://deals.mobstaging.com'
+  end
 end

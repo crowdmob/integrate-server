@@ -81,7 +81,7 @@ end
 # You can run this script from the command line to see a working example of
 # server-to-server integration.
 if __FILE__ == $0
-  CrowdMob.base_url = 'http://deals.mobstaging.com'
+  CrowdMob.env = :development
   CrowdMob::Campaigns.organization_secret_key = '9cbfbe10e13f2a30cb6509ef0e09445b'
   CrowdMob::Campaigns.organization_permalink = 'crowdmob'
 

@@ -26,14 +26,13 @@ require 'crowdmob'
 # server-to-server integration.
 if __FILE__ == $0
 
-  # This is how you report app installs to CrowdMob.  First, specify the
-  # CrowdMob server's base URL.  For development and testing, use CrowdMob's
-  # staging server at:
-  CrowdMob.base_url = 'http://deals.mobstaging.com'
+  #---------------------------------------------------------------------------#
+  # This is how you report app installs to CrowdMob.                          #
+  #---------------------------------------------------------------------------#
 
-  # Eventually, before you go live, you'll want to switch to CrowdMob's
-  # production server at:
-  # CrowdMob.base_url = 'http://deals.crowdmob.com'
+  # Your environment.
+  CrowdMob.env = :development   # Please use this for development/testing.
+  # CrowdMob.env = :production  # Please use this only when you go live.
 
   # When you registered your app with CrowdMob, you got an app secret key and
   # permalink:
@@ -61,14 +60,13 @@ if __FILE__ == $0
 
 
 
-  # This is how you manage app install campaigns through CrowdMob.  First,
-  # specify the CrowdMob server's base URL.  For development and testing, use
-  # CrowdMob's staging server at:
-  CrowdMob.base_url = 'http://deals.mobstaging.com'
+  #---------------------------------------------------------------------------#
+  # This is how you manage app install campaigns through CrowdMob.            #
+  #---------------------------------------------------------------------------#
 
-  # Eventually, before you go live, you'll want to switch to CrowdMob's
-  # production server at:
-  # CrowdMob.base_url = 'http://deals.crowdmob.com'
+  # Your environment.
+  CrowdMob.env = :development   # Please use this for development/testing.
+  # CrowdMob.env = :production  # Please use this only when you go live.
 
   # When you registered your organization with CrowdMob, you got an
   # organization secret key and permalink:

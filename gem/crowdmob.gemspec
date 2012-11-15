@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'crowdmob'
-  s.version     = '0.0.1'
+  s.version     = '0.0.2'
   s.date        = '2012-11-14'
   s.summary     = 'Server to server integration with CrowdMob'
   s.description = 'Server to server integration with CrowdMob'

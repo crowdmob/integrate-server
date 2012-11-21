@@ -20,14 +20,15 @@ module CrowdMob::Campaigns
   @organization_secret_key = '9cbfbe10e13f2a30cb6509ef0e09445b'
   @organization_permalink = 'crowdmob'
 
-  def self.create(active, params)
+  def self.create(app_store_url, active, params)
     url = CrowdMob.base_url + '/organizations/' + @organization_permalink + '/sponsored_action_campaigns.json'
     uri = URI.parse(url)
     now, secret_hash = self.compute_secret_hash
     params = {
+      'app_store_url' => app_store_url,
       'datetime' => now,
       'secret_hash' => secret_hash,
-      'active' => params[:active],
+      'active' => active,
       'sponsored_action_campaign[bid_in_cents]' => params[:bid_in_cents],
       'sponsored_action_campaign[max_total_spend_in_cents]' => params[:max_total_spend_in_cents],
       'sponsored_action_campaign[max_spend_per_day_in_cents]' => params[:max_spend_per_day_in_cents],

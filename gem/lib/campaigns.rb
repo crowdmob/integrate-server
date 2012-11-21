@@ -96,7 +96,7 @@ if __FILE__ == $0
     starts_at: now,
     ends_at: one_week_from_now,
   }
-  campaign = CrowdMob::Campaigns.create(true, params)
+  campaign = CrowdMob::Campaigns.create('https://itunes.apple.com/us/app/angry-birds-free/id409807569?mt=8', true, params)
 
   # Edit the campaign:
   params = { bid_in_cents: 2 }

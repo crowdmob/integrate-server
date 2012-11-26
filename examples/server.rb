@@ -83,7 +83,7 @@ if __FILE__ == $0
     starts_at: now,                   # When this campaign begins.
     ends_at: one_week_from_now,       # When this campaign ends.
   }
-  live = true                       # Whether or not you're ready to take this campaign live right now.
+  live = true                         # Whether or not you're ready to take this campaign live right now.
   campaign = CrowdMob::Campaigns.create('https://itunes.apple.com/us/app/angry-birds-free/id409807569?mt=8', live, params)
 
   # Edit the campaign:

@@ -41,6 +41,14 @@ module CrowdMob::Campaigns
     json
   end
 
+  def self.query(campaign_id)
+    url = CrowdMob.base_url + '/organizations/' + @organization_permalink + '/sponsored_action_campaigns/' + campaign_id.to_s + '.json'
+    now, secret_hash = self.compute_secret_hash
+    url += '?datetime=' + now + '&secret_hash=' + secret_hash
+    uri = URI.parse(url)
+    response = self.issue_http_request(uri, 'Get')
+  end
+
   def self.edit(campaign_id, active, params)
     url = CrowdMob.base_url + '/organizations/' + @organization_permalink + '/sponsored_action_campaigns/' + campaign_id.to_s + '.json'
     now, secret_hash = self.compute_secret_hash

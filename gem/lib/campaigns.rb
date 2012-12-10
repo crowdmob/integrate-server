@@ -23,9 +23,11 @@ module CrowdMob::Campaigns
   def self.create(app_store_url, active, params)
     url = CrowdMob.base_url + '/organizations/' + @organization_permalink + '/sponsored_action_campaigns.json'
     uri = URI.parse(url)
+    app_store_key = 'ios_url' if app_store_url =~ /itunes\.apple\.com/
+    app_store_key = 'android_url' if app_store_url =~ /play\.google\.com/
     now, secret_hash = self.compute_secret_hash
     params = {
-      'app_store_url' => app_store_url,
+      app_store_key => app_store_url,
       'datetime' => now,
       'secret_hash' => secret_hash,
       'active' => active,

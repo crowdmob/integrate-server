@@ -37,9 +37,13 @@ module CrowdMob::Campaigns
       'campaign[ends_at]' => params[:ends_at],
       'campaign[kind]' => 'install',
     }
+    form['campaign[android]'] = '1' if params[:android_bid]
     form['campaign[android_bid]'] = params[:android_bid] if params[:android_bid]
+    form['campaign[ipad]'] = '1' if params[:ipad_bid]
     form['campaign[ipad_bid]'] = params[:ipad_bid] if params[:ipad_bid]
+    form['campaign[iphone]'] = '1' if params[:iphone_bid]
     form['campaign[iphone_bid]'] = params[:iphone_bid] if params[:iphone_bid]
+    form['campaign[ipod]'] = '1' if params[:ipod_bid]
     form['campaign[ipod_bid]'] = params[:ipod_bid] if params[:ipod_bid]
 
     response, data = Net::HTTP.post_form(uri, form)

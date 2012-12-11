@@ -53,7 +53,7 @@ module CrowdMob::Campaigns
     url = CrowdMob.base_url + '/organizations/' + @organization_permalink + '/sponsored_action_campaigns/' + campaign_id.to_s + '.json'
     now, secret_hash = self.compute_secret_hash
     url += '?datetime=' + now + '&secret_hash=' + secret_hash + '&active=' + active.to_s
-    params.each { |key, value| url += '&sponsored_action_campaign[' + key.to_s + ']=' + value.to_s }
+    params.each { |key, value| url += '&campaign[' + key.to_s + ']=' + value.to_s }
     uri = URI.parse(url)
     response = self.issue_http_request(uri, 'Put')
     json = JSON.parse(response.body)

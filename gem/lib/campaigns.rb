@@ -29,12 +29,12 @@ module CrowdMob::Campaigns
       'datetime' => now,
       'secret_hash' => secret_hash,
       'active' => active,
-      'sponsored_action_campaign[bid_in_cents]' => params[:bid_in_cents],
-      'sponsored_action_campaign[max_total_spend_in_cents]' => params[:max_total_spend_in_cents],
-      'sponsored_action_campaign[max_spend_per_day_in_cents]' => params[:max_spend_per_day_in_cents],
-      'sponsored_action_campaign[starts_at]' => params[:starts_at],
-      'sponsored_action_campaign[ends_at]' => params[:ends_at],
-      'sponsored_action_campaign[kind]' => 'install',
+      'campaign[bid_in_cents]' => params[:bid_in_cents],
+      'campaign[max_total_spend_in_cents]' => params[:max_total_spend_in_cents],
+      'campaign[max_spend_per_day_in_cents]' => params[:max_spend_per_day_in_cents],
+      'campaign[starts_at]' => params[:starts_at],
+      'campaign[ends_at]' => params[:ends_at],
+      'campaign[kind]' => 'install',
     }
     response, data = Net::HTTP.post_form(uri, params)
     json = JSON.parse(response.body)

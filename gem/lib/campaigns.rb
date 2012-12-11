@@ -24,19 +24,25 @@ module CrowdMob::Campaigns
     url = CrowdMob.base_url + '/organizations/' + @organization_permalink + '/sponsored_action_campaigns.json'
     uri = URI.parse(url)
     now, secret_hash = self.compute_secret_hash
-    params = {
+
+    form = {
       'app_url' => app_url,
       'datetime' => now,
       'secret_hash' => secret_hash,
       'active' => active,
-      'campaign[bid_in_cents]' => params[:bid_in_cents],
+      # 'campaign[bid_in_cents]' => params[:bid_in_cents],
       'campaign[max_total_spend_in_dollars]' => params[:max_total_spend_in_dollars],
       'campaign[max_spend_per_day_in_dollars]' => params[:max_spend_per_day_in_dollars],
       'campaign[starts_at]' => params[:starts_at],
       'campaign[ends_at]' => params[:ends_at],
       'campaign[kind]' => 'install',
     }
-    response, data = Net::HTTP.post_form(uri, params)
+    form['campaign[android_bid]'] = params[:android_bid] if params[:android_bid]
+    form['campaign[ipad_bid]'] = params[:ipad_bid] if params[:ipad_bid]
+    form['campaign[iphone_bid]'] = params[:iphone_bid] if params[:iphone_bid]
+    form['campaign[ipod_bid]'] = params[:ipod_bid] if params[:ipod_bid]
+
+    response, data = Net::HTTP.post_form(uri, form)
     json = JSON.parse(response.body)
     json
   end
@@ -98,11 +104,14 @@ if __FILE__ == $0
   now = DateTime.now
   one_week_from_now = now + 7
   params = {
-    bid_in_cents: 1,
     max_total_spend_in_dollars: 100.00,
     max_spend_per_day_in_dollars: 10.00,
     starts_at: now,
     ends_at: one_week_from_now,
+    # android_bid: 2.00,
+    # ipad_bid: 2.50,
+    iphone_bid: 3.00,
+    ipod_bid: 2.00,
   }
   campaign = CrowdMob::Campaigns.create('https://itunes.apple.com/us/app/angry-birds-free/id409807569?mt=8', true, params)
 

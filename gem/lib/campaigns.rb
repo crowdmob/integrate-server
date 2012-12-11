@@ -20,22 +20,21 @@ module CrowdMob::Campaigns
   @organization_secret_key = '9cbfbe10e13f2a30cb6509ef0e09445b'
   @organization_permalink = 'crowdmob'
 
-  def self.create(app_url, active, params)
+  def self.create(params, active)
     url = CrowdMob.base_url + '/organizations/' + @organization_permalink + '/sponsored_action_campaigns.json'
     uri = URI.parse(url)
     now, secret_hash = self.compute_secret_hash
 
     form = {
-      'app_url' => app_url,
+      'ios_url' => params[:ios_url],
+      'android_url' => params[:android_url],
       'datetime' => now,
       'secret_hash' => secret_hash,
       'active' => active,
-      # 'campaign[bid_in_cents]' => params[:bid_in_cents],
       'campaign[max_total_spend_in_dollars]' => params[:max_total_spend_in_dollars],
       'campaign[max_spend_per_day_in_dollars]' => params[:max_spend_per_day_in_dollars],
       'campaign[starts_at]' => params[:starts_at],
       'campaign[ends_at]' => params[:ends_at],
-      'campaign[kind]' => 'install',
     }
     form['campaign[android]'] = '1' if params[:android_bid]
     form['campaign[android_bid]'] = params[:android_bid] if params[:android_bid]
@@ -108,6 +107,7 @@ if __FILE__ == $0
   now = DateTime.now
   one_week_from_now = now + 7
   params = {
+    ios_url: 'https://itunes.apple.com/us/app/angry-birds-free/id409807569?mt=8',
     max_total_spend_in_dollars: 100.00,
     max_spend_per_day_in_dollars: 10.00,
     starts_at: now,
@@ -117,7 +117,7 @@ if __FILE__ == $0
     iphone_bid: 3.00,
     ipod_bid: 2.00,
   }
-  campaign = CrowdMob::Campaigns.create('https://itunes.apple.com/us/app/angry-birds-free/id409807569?mt=8', true, params)
+  campaign = CrowdMob::Campaigns.create(params, true)
 
   # Edit the campaign:
   params = { bid_in_cents: 2 }

@@ -99,8 +99,8 @@ if __FILE__ == $0
   one_week_from_now = now + 7
   params = {
     bid_in_cents: 1,
-    max_total_spend_in_cents: 100,
-    max_spend_per_day_in_cents: 10,
+    max_total_spend_in_dollars: 100.00,
+    max_spend_per_day_in_dollars: 10.00,
     starts_at: now,
     ends_at: one_week_from_now,
   }

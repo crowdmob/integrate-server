@@ -77,11 +77,11 @@ if __FILE__ == $0
   now = DateTime.now
   one_week_from_now = now + 7
   params = {
-    bid_in_cents: 300,                # The bounty in cents that you'll pay CrowdMob for each app install.
-    max_total_spend_in_cents: 90000,  # The maximum you're willing to spend on app installs, total, for this campaign.
-    max_spend_per_day_in_cents: 9000, # The maximum you're willing to spend on app installs per day for this campaign.
-    starts_at: now,                   # When this campaign begins.
-    ends_at: one_week_from_now,       # When this campaign ends.
+    bid_in_cents: 300,                    # The bounty in cents that you'll pay CrowdMob for each app install.
+    max_total_spend_in_dollars: 900.00,   # The maximum you're willing to spend on app installs, total, for this campaign.
+    max_spend_per_day_in_dollars: 90.00,  # The maximum you're willing to spend on app installs per day for this campaign.
+    starts_at: now,                       # When this campaign begins.
+    ends_at: one_week_from_now,           # When this campaign ends.
   }
   live = true                         # Whether or not you're ready to take this campaign live right now.
   campaign = CrowdMob::Campaigns.create('https://itunes.apple.com/us/app/angry-birds-free/id409807569?mt=8', live, params)

@@ -21,7 +21,7 @@ module CrowdMob::Campaigns
   @organization_permalink = 'crowdmob'
 
   def self.create(params, active)
-    url = CrowdMob.base_url + '/organizations/' + @organization_permalink + '/sponsored_action_campaigns.json'
+    url = CrowdMob.base_url + '/api/organizations/' + @organization_permalink + '/sponsored_action_campaigns.json'
     uri = URI.parse(url)
     now, secret_hash = self.compute_secret_hash
 
@@ -51,7 +51,7 @@ module CrowdMob::Campaigns
   end
 
   def self.query(campaign_id)
-    url = CrowdMob.base_url + '/organizations/' + @organization_permalink + '/sponsored_action_campaigns/' + campaign_id.to_s + '.json'
+    url = CrowdMob.base_url + '/api/organizations/' + @organization_permalink + '/sponsored_action_campaigns/' + campaign_id.to_s + '.json'
     now, secret_hash = self.compute_secret_hash
     url += '?datetime=' + now + '&secret_hash=' + secret_hash
     uri = URI.parse(url)
@@ -59,7 +59,7 @@ module CrowdMob::Campaigns
   end
 
   def self.edit(campaign_id, active, params)
-    url = CrowdMob.base_url + '/organizations/' + @organization_permalink + '/sponsored_action_campaigns/' + campaign_id.to_s + '.json'
+    url = CrowdMob.base_url + '/api/organizations/' + @organization_permalink + '/sponsored_action_campaigns/' + campaign_id.to_s + '.json'
     now, secret_hash = self.compute_secret_hash
     url += '?datetime=' + now + '&secret_hash=' + secret_hash + '&active=' + active.to_s
     params.each { |key, value| url += '&campaign[' + key.to_s + ']=' + value.to_s }
@@ -70,7 +70,7 @@ module CrowdMob::Campaigns
   end
 
   def self.delete(campaign_id)
-    url = CrowdMob.base_url + '/organizations/' + @organization_permalink + '/sponsored_action_campaigns/' + campaign_id.to_s + '.json'
+    url = CrowdMob.base_url + '/api/organizations/' + @organization_permalink + '/sponsored_action_campaigns/' + campaign_id.to_s + '.json'
     now, secret_hash = self.compute_secret_hash
     url += '?datetime=' + now + '&secret_hash=' + secret_hash
     uri = URI.parse(url)

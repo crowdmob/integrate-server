@@ -99,5 +99,7 @@ if __FILE__ == $0
   # uniquely identify a device:
   mac_address = '11:11:11:11:11:11'
 
-  CrowdMob::Installs.report(mac_address)
+  puts "reporting install"
+  json = CrowdMob::Installs.report(mac_address)
+  puts "reported install: #{json}"
 end

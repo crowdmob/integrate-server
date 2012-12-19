@@ -104,6 +104,7 @@ if __FILE__ == $0
   CrowdMob::Campaigns.organization_permalink = 'crowdmob'
 
   # Create a campaign:
+  puts "creating campaign"
   now = DateTime.now
   one_week_from_now = now + 7
   params = {
@@ -118,11 +119,16 @@ if __FILE__ == $0
     ipod_bid: 2.00,
   }
   campaign = CrowdMob::Campaigns.create(params, true)
+  puts "created campaign: #{campaign}"
 
   # Edit the campaign:
+  puts "editing campaign"
   params = { bid_in_cents: 2 }
   campaign = CrowdMob::Campaigns.edit(campaign['id'], false, params)
+  puts "edited campaign: #{campaign}"
 
   # Delete the campaign:
+  puts "deleting campaign"
   CrowdMob::Campaigns.delete(campaign['id'])
+  puts "deleted campaign"
 end

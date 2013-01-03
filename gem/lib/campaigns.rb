@@ -123,7 +123,7 @@ if __FILE__ == $0
 
   # Edit the campaign:
   puts "editing campaign"
-  params = { bid_in_cents: 2 }
+  params = { iphone_bid: 3.50 }
   campaign = CrowdMob::Campaigns.edit(campaign['id'], false, params)
   puts "edited campaign: #{campaign}"
 

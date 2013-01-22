@@ -46,33 +46,24 @@ class AppInstall {
     // requirements as a salt.
     private $salt = 'salt';
 
-    private function hash_mac_address($mac_address) {
-      // Hash the MAC address.  If you already store the unique device
-      // identifiers hashed, then this step is unnecessary.  If you store the
-      // device IDs hashed, you would've worked with CrowdMob's engineers to
-      // implement a custom server-to-server installs tracking integration
-      // solution.
-      $hashed_mac_address = hash('sha256', $this->salt . $mac_address);
-      return $hashed_mac_address;
-    }
 
-    private function compute_secret_hash($hashed_mac_address) {
+    private function compute_secret_hash($mac_address) {
       // Compute the secret hash.  The secret hash is a required POST
       // parameter which prevents forged POST requests.  This secret hash
       // consists of your app's permalink, a comma, the string
-      // "campaign_uuid", a comma, and the previously hashed MAC address -
-      // salted with your app's secret key, all SHA256 hashed.  (Note that
-      // there's no comma between the secret key salt and the permalink.)
-      $secret_hash = hash('sha256', $this->app_secret_key . $this->app_permalink . ',' . 'campaign_uuid' . ',' . $hashed_mac_address);
+      // "mac_address", a comma, and the MAC address - salted with your app's
+      // secret key, all SHA256 hashed.  (Note that there's no comma between
+      // the secret key salt and the permalink.)
+      $secret_hash = hash('sha256', $this->app_secret_key . $this->app_permalink . ',' . 'mac_address' . ',' . $mac_address);
       return $secret_hash;
     }
 
-    private function populate_post_fields($hashed_mac_address, $secret_hash) {
+    private function populate_post_fields($mac_address, $secret_hash) {
       // Construct the POST parameters:
       $fields = array(
           'permalink'   => $this->app_permalink,
-          'uuid'        => $hashed_mac_address,
-          'uuid_type'   => 'campaign_uuid',
+          'uuid'        => $mac_address,
+          'uuid_type'   => 'mac_address',
           'secret_hash' => $secret_hash
       );
       return $fields;
@@ -89,9 +80,8 @@ class AppInstall {
 
     public function report_to_crowdmob($mac_address) {
         $url = $this->base_url . '/crave/verify_install.json';
-        $hashed_mac_address = $this->hash_mac_address($mac_address);
-        $secret_hash = $this->compute_secret_hash($hashed_mac_address);
-        $fields = $this->populate_post_fields($hashed_mac_address, $secret_hash);
+        $secret_hash = $this->compute_secret_hash($mac_address);
+        $fields = $this->populate_post_fields($mac_address, $secret_hash);
         $fields_string = $this->compute_post_fields_string($fields);
 
         // Finally, issue the POST request to CrowdMob's server:

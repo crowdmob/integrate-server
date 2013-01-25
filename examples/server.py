@@ -12,7 +12,6 @@
 
 
 
-import hashlib
 import httplib
 import json
 import urllib
@@ -56,27 +55,20 @@ class CrowdMob(object):
         url = cls.base_url + '/crave/verify_install.json'
         url = urlparse.urlparse(url)
 
-        # Hash the MAC address.  If you already store the unique device
-        # identifiers hashed, then this step is unnecessary.  If you store the
-        # device IDs hashed, you would've worked with CrowdMob's engineers to
-        # implement a custom server-to-server installs tracking integration
-        # solution.
-        hashed_mac_address = hashlib.sha256(cls.salt + mac_address).hexdigest()
-
         # Compute the secret hash.  The secret hash is a required POST
         # parameter which prevents forged POST requests.  This secret hash
-        # consists of your app's permalink, a comma, the string
-        # "campaign_uuid", a comma, and the previously hashed MAC address -
-        # salted with your app's secret key, all SHA256 hashed.  (Note that
-        # there's no comma between the secret key salt and the permalink.)
-        secret_hash = cls.app_secret_key + cls.app_permalink + ',' + 'campaign_uuid' + ',' + hashed_mac_address
+        # consists of your app's permalink, a comma, the string "mac_address",
+        # a comma, and the MAC address - salted with your app's secret key,
+        # all SHA256 hashed.  (Note that there's no comma between the secret
+        # key salt and the permalink.)
+        secret_hash = cls.app_secret_key + cls.app_permalink + ',' + 'mac_address' + ',' + mac_address
         secret_hash = hashlib.sha256(secret_hash).hexdigest()
 
         # The POST parameters:
         params = urllib.urlencode({
             'permalink': cls.app_permalink,
-            'uuid': hashed_mac_address,
-            'uuid_type': 'campaign_uuid',
+            'uuid': mac_address,
+            'uuid_type': 'mac_address',
             'secret_hash': secret_hash,
         })
         headers = {

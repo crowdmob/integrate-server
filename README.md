@@ -118,3 +118,18 @@ Look at some example source code in:
 * [Python](https://github.com/crowdmob/integrate-server/blob/master/examples/server.py)
 * [Ruby](https://github.com/crowdmob/integrate-server/blob/master/examples/server.rb)
 * [Bash (shell) script / curl](https://github.com/crowdmob/integrate-server/blob/master/examples/server.sh)
+
+
+Event Tracking
+==============
+
+CrowdMob (http://deals.crowdmob.com/) can also track events that occur after an install, and provide reporting around it. 
+
+Currently this is only enabled for networks like hasoffers, although we are working hard to make it available for individual publishers too.
+
+Overview
+--------
+
+Just POST to our server, and we'll record it!  You can append any extra values you would like and we will track them too.
+
+`POST https://deals.crowdmob.com/crave/events/network_create.json?network=<CROWDMOB_NETWORK_PERMALINK>&crowdmob_clickid=<CROWDMOB_CLICK_UUID>&eventid=<UNIQUE_EVENT_ID_ON_NETWORK>&payout=<AMOUNT_IN_USD_CROWDMOB_EARNED_FOR_THIS>&revenue=<REVENUE_IN_USD_ADVERTISER_GENERATED_FOR_THEMSELVES>...`

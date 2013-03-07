@@ -133,3 +133,9 @@ Overview
 Just POST to our server, and we'll record it!  You can append any extra values you would like and we will track them too.
 
 `POST https://deals.crowdmob.com/crave/events/network_create.json?network=<CROWDMOB_NETWORK_PERMALINK>&crowdmob_clickid=<CROWDMOB_CLICK_UUID>&eventid=<UNIQUE_EVENT_ID_ON_NETWORK>&payout=<AMOUNT_IN_USD_CROWDMOB_EARNED_FOR_THIS>&revenue=<REVENUE_IN_USD_ADVERTISER_GENERATED_FOR_THEMSELVES>...`
+
+There are 3 possible return values:
+
+* For success, we will return the ID of the event in our system created, like: `{"id": 1234567890 }`
+* For an error, we will return a has with an "errors" key, like `{"errors":{"network_event_uuid":["has already been taken"]}}`
+* A `404` Not Found will be returned if CrowdMob couldn't identify your network by the permalink specified, or the click couldn't be found in our system by `crowdmob_clickid`.

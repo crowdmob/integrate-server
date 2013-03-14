@@ -8,11 +8,13 @@ Short Version
 -------------
 Make a get request to `GET http://deals.crowdmob.com/api/networks/{YOUR_CROWDMOB_PERMALINK}/ads.json` and the responding json will be in the following format.  Replace `{YOUR_CROWDMOB_PERMALINK}` with the value provided by your CrowdMob Account Manager.
 
+
 <pre class="json">
-{
+{"campaigns": [
+  {
      "id": 76, // CrowdMob's campaign ID that is unique to these bid amounts
-     "network_max_total_spend": 100.0, // Total spend, in USD that can be spent by the network (e.g. AirPush)
-     "network_max_spend_per_day": 20.0, // Total spend per day, in USD that can be spent by the network (e.g. AirPush)
+     "network_max_total_spend": 100.0, // Total spend, in USD that can be spent by the network
+     "network_max_spend_per_day": 20.0, // Total spend per day, in USD that can be spent by the network
      "starts_at": "1970-01-01T00:00:00+00:00", // Earliest date that the ads can be shown for this campaign ID
      "ends_at": null, // Last date that the ads can be shown for this campaign ID (or null for "forever")
      "app": {
@@ -31,7 +33,7 @@ Make a get request to `GET http://deals.crowdmob.com/api/networks/{YOUR_CROWDMOB
          "website_url": "http://www.tinyco.com" // Website for the publisher of the app being advertised in this campaign
        }
      },
-     "click_through_url": "http://crave.crowdmob.com/incoming?campaign_id=76&device_type=DEVICE_TYPE&device_uuid=DEVICE_UUID&device_uuid_type=DEVICE_UUID_TYPE&location=USER_LOCATION&source_name=airpush&source_uuid=SOURCE_CLICK_UUID", // Click through URL with macros to be replaced when shown in the ad for the particular device / impression
+     "click_through_url": "http://crave.crowdmob.com/incoming?campaign_id=76&device_type=DEVICE_TYPE&device_uuid=DEVICE_UUID&device_uuid_type=DEVICE_UUID_TYPE&location=USER_LOCATION&source_name={YOUR_CROWDMOB_PERMALINK}&source_uuid=SOURCE_CLICK_UUID", // Click through URL with macros to be replaced when shown in the ad for the particular device / impression
      "paused_at": null, // null if the campaign is not currently paused.  A datetime if the campaign is currently paused
      "bids": { // CPC Bid amounts for different platforms for devices based in different locales
        "android": { // Bids for android devices
@@ -53,11 +55,17 @@ Make a get request to `GET http://deals.crowdmob.com/api/networks/{YOUR_CROWDMOB
          }
        }
      }
-   }
+   },
+   // ... more campaigns
+]};
 </pre>
 
 
 In Detail
 ---------
 
-IN PROGRESS
+We provide a JSON API that describes details on the campaigns that can be run on your network.  
+
+Simply issue a get request to our server endpoint: `GET http://deals.crowdmob.com/api/networks/{YOUR_CROWDMOB_PERMALINK}/ads.json` and the responding json will be in the following format.  Replace `{YOUR_CROWDMOB_PERMALINK}` with the value provided by your CrowdMob Account Manager.
+
+We will return a JSON object with an array of `campaigns`, e.g. `{"campaigns": [ { /* campaign 1 */ }, { /* campaign 2 */ }, ... ]}`.  Each campaign object contains the necessary information to render an ad for the campaign on your own network.  Let's examine them in more detail.

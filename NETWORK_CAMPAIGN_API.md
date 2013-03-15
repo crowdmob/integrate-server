@@ -250,3 +250,5 @@ In order to assemble ads to be displayed in HTML, we can simply iterate through 
     }
   </script>
 </pre>
+
+This is also available as a gist, at https://gist.github.com/mattcrowdmob/5166634

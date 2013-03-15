@@ -180,9 +180,9 @@ Assembling an Advertisement
 In order to assemble ads to be displayed in HTML, we can simply iterate through the campaigns and find the highest value campaign that matches the current user's device and location.  Here's a javascript (jQuery) snippet that will do the job:
 
 <pre>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script><!-- required to getJSON from our server -->
-  <script src="https://datejs.googlecode.com/files/date.js"></script><!-- required to parse dates in ISO format -->
-  <script>
+  &lt;script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"&gt;&lt;/script&gt;&lt;!-- required to getJSON from our server --&gt;
+  &lt;script src="https://datejs.googlecode.com/files/date.js">&lt;/script&gt;&lt;!-- required to parse dates in ISO format --&gt;
+  &lt;script&gt;
     var device_tracking_type = "mac_address";
     var current_user_device_type = "android";
     var current_user_country_code = "ca";
@@ -219,7 +219,7 @@ In order to assemble ads to be displayed in HTML, we can simply iterate through 
       }
       
       if (lastHighestCampaign) {
-        var CAMPAIGN_TEMPLATE = "<a href='{{CLICKTHRU_URL}}'><img src='{{APPICON}}'/>{{APPTITLE}}<br/>{{APPDESCRIPTION}}</a>";
+        var CAMPAIGN_TEMPLATE = "&lt;a href='{{CLICKTHRU_URL}}'&gt;&lt;img src='{{APPICON}}'/&gt;{{APPTITLE}}&lt;br/&gt;{{APPDESCRIPTION}}&lt;/a&gt;";
       
         // First replace the Click-Thru URL Parameters
         var finalizedClickThruUrl = lastHighestCampaign.click_through_url.replace(
@@ -248,7 +248,7 @@ In order to assemble ads to be displayed in HTML, we can simply iterate through 
         return null;
       }
     }
-  </script>
+  &lt;/script&gt;
 </pre>
 
 This is also available as a gist, at https://gist.github.com/mattcrowdmob/5166634

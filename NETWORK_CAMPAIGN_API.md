@@ -191,7 +191,9 @@ In order to assemble ads to be displayed in HTML, we can simply iterate through 
     var current_impression_uuid = "mynetworkimpression-iowd23e823jsd094";
     var current_time = new Date();
     
-    $.getJSON('http://deals.crowdmob.com/api/networks/{YOUR_CROWDMOB_PERMALINK}/ads.json', highestCpcCampaignMarkup);
+    $.getJSON('http://deals.crowdmob.com/api/networks/{YOUR_CROWDMOB_PERMALINK}/ads.json', function(data) {
+      console.log("Returning the markup for the highest bid:", highestCpcCampaignMarkup(data));
+    });
     
     // Returns the ad markup for the campaign that has the highest bid matching the current_user_device_type, in the country defined by current_user_country_code, at the current time, or null if there isn't a matching campaign.
     function highestCpcCampaignMarkup(data) {
@@ -229,7 +231,7 @@ In order to assemble ads to be displayed in HTML, we can simply iterate through 
           ).replace(
             'SOURCE_CLICK_UUID', current_impression_uuid
           ).replace(
-            'USER_LOCATION', current_user_mac_address
+            'USER_LOCATION', current_user_location
           );
         
         return CAMPAIGN_TEMPLATE.replace(

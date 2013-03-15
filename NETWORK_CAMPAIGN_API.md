@@ -181,7 +181,7 @@ In order to assemble ads to be displayed in HTML, we can simply iterate through 
 
 <pre>
   &lt;script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"&gt;&lt;/script&gt;&lt;!-- required to getJSON from our server --&gt;
-  &lt;script src="https://datejs.googlecode.com/files/date.js">&lt;/script&gt;&lt;!-- required to parse dates in ISO format --&gt;
+  &lt;script src="https://datejs.googlecode.com/files/date.js"&gt;&lt;/script&gt;&lt;!-- required to parse dates in ISO format --&gt;
   &lt;script&gt;
     var device_tracking_type = "mac_address";
     var current_user_device_type = "android";
@@ -199,17 +199,17 @@ In order to assemble ads to be displayed in HTML, we can simply iterate through 
     function highestCpcCampaignMarkup(data) {
       var campaigns = data.campaigns;
       var lastHighestCampaign = null;
-      for (var i = 0; i < campaigns.length; ++i) {
+      for (var i = 0; i &lt; campaigns.length; ++i) {
         var campaign = campaigns[i];
         
         // First, make sure we are between the right dates, right now (or the campaign doesn't end at a specific date), that isn't paused
-        if (Date.parse(campaign.starts_at) <= current_time && (campaign.ends_at == null || Date.parse(campaign.ends_at) > current_time) && campaign.paused_at == null) {
+        if (Date.parse(campaign.starts_at) &lt;= current_time && (campaign.ends_at == null || Date.parse(campaign.ends_at) &gt; current_time) && campaign.paused_at == null) {
           
           // Second, make sure that this campaign has a bid for the device type, in the region, and that that region is enabled
           if (campaign.bids[current_user_device_type] && campaign.bids[current_user_device_type][current_user_country_code] && campaign.bids[current_user_device_type][current_user_country_code].enabled) {
             
             // Finally, if the matching campaign has a higher bid than the last one found, mark it as found
-            if (lastHighestCampaign == null || lastHighestCampaign[current_user_device_type][current_user_country_code].network_cpi_bid < campaign.bids[current_user_device_type][current_user_country_code].network_cpi_bid) {
+            if (lastHighestCampaign == null || lastHighestCampaign[current_user_device_type][current_user_country_code].network_cpi_bid &lt; campaign.bids[current_user_device_type][current_user_country_code].network_cpi_bid) {
               lastHighestCampaign = campaign;
             }
             
